@@ -12,6 +12,7 @@ class loginPage extends StatefulWidget {
 class _loginPageState extends State<loginPage> {
   @override
   Widget build(BuildContext context) {
+    bool _isPress = true;
     double screenHeight = MediaQuery.of(context).size.height;
     double containerHeight = screenHeight - 40 - 150 - 140;
     return Scaffold(
@@ -29,7 +30,7 @@ class _loginPageState extends State<loginPage> {
       //   centerTitle: true,
       // ),
       //body_part
-      body:ListView(
+      body: ListView(
         children: [
           Column(
             children: [
@@ -89,9 +90,6 @@ class _loginPageState extends State<loginPage> {
                                 BorderSide(color: Colors.grey, width: 1),
                           ),
                         ),
-                        keyboardType: TextInputType.numberWithOptions(
-                          signed: true,
-                        ),
                       ),
                     ),
                     Padding(
@@ -118,17 +116,27 @@ class _loginPageState extends State<loginPage> {
                                 BorderSide(color: Colors.grey, width: 1),
                           ),
                         ),
+                        keyboardType: TextInputType.visiblePassword,
                       ),
                     ),
                     SizedBox(height: 40),
                     Center(
                       child: ElevatedButton(
                         onPressed: () {
+                          setState(() {
+                            _isPress = !_isPress;
+                          });
                           if (kDebugMode) {
                             print('done');
                           }
                         },
                         child: Text('Login'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: _isPress
+                              ? Color.fromRGBO(255, 255, 255, 1)
+                              : Color.fromRGBO(0, 0, 0, 1),
+                          shadowColor: Color.fromRGBO(0, 0, 0, 1),
+                        ),
                       ),
                     ),
                   ],
