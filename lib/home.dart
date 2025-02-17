@@ -17,7 +17,7 @@ class homePage extends StatefulWidget {
 class _homePageState extends State<homePage> {
   int _isSelectedIndex = 0;
 
-  final List<Widget> widgetOptions = const [
+  final List<Widget> widgetOptions = [
     ProfileScreen(),
     SearchScreen(),
     Center(child: Text("data", style: TextStyle(fontSize: 24))),
@@ -36,7 +36,6 @@ class _homePageState extends State<homePage> {
     return Scaffold(
       bottomNavigationBar: Container(
         padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-        alignment: Alignment.bottomCenter,
         child: GNav(
           rippleColor: Colors.grey,
           hoverColor: Colors.grey,
