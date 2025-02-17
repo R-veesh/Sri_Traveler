@@ -15,13 +15,14 @@ class _homePageState extends State<homePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: Container(
+        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
         alignment: Alignment.bottomCenter,
         child: GNav(
-          backgroundColor: Colors.black, // navigation bar color
+          // navigation bar color
           rippleColor: Colors.grey, // tab button ripple color when pressed
           hoverColor: Colors.grey, // tab button hover color
           haptic: true, // haptic feedback
-          tabBorderRadius: 15,
+          tabBorderRadius: 18,
           tabActiveBorder:
               Border.all(color: Colors.black, width: 1), // tab button border
           tabBorder:
@@ -63,8 +64,10 @@ class _homePageState extends State<homePage> {
         children: [
           Column(
             children: [
-              Container(),
-              Container(),
+              Container(
+                  //
+
+                  ),
             ],
           ),
         ],
