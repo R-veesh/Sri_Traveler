@@ -2,15 +2,35 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:sri_traveler/home/Profile.dart';
+import 'package:sri_traveler/home/dashbord.dart';
+import 'package:sri_traveler/home/search.dart';
+import 'package:sri_traveler/home/trip.dart';
 
 class homePage extends StatefulWidget {
-  const homePage({super.key});
+  // const homePage({super.key});
 
   @override
-  State<homePage> createState() => _homePageState();
+  _homePageState createState() => _homePageState();
 }
 
 class _homePageState extends State<homePage> {
+  int _isSelectedIndex = 0;
+
+  final List<Widget> widgetOptions = const [
+    ProfileScreen(),
+    SearchScreen(),
+    Center(child: Text("data", style: TextStyle(fontSize: 24))),
+    DashboardScreen(),
+    TripScreen(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _isSelectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,28 +38,23 @@ class _homePageState extends State<homePage> {
         padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
         alignment: Alignment.bottomCenter,
         child: GNav(
-          // navigation bar color
-          rippleColor: Colors.grey, // tab button ripple color when pressed
-          hoverColor: Colors.grey, // tab button hover color
-          haptic: true, // haptic feedback
+          rippleColor: Colors.grey,
+          hoverColor: Colors.grey,
+          haptic: true,
           tabBorderRadius: 18,
-          tabActiveBorder:
-              Border.all(color: Colors.black, width: 1), // tab button border
-          tabBorder:
-              Border.all(color: Colors.grey, width: 1), // tab button border
+          tabActiveBorder: Border.all(color: Colors.black, width: 1),
+          tabBorder: Border.all(color: Colors.grey, width: 1),
           tabShadow: [
             BoxShadow(color: Colors.grey.withOpacity(0.5), blurRadius: 8)
-          ], // tab button shadow
-          curve: Curves.easeOutExpo, // tab animation curves
-          duration: Duration(milliseconds: 9), // tab animation duration
-          gap: 8, // the tab button gap between icon and text
-          color: Colors.grey[800], // unselected icon color
-          activeColor: Colors.purple, // selected icon and text color
-          iconSize: 24, // tab button icon size
-          tabBackgroundColor:
-              Colors.purple.withOpacity(0.1), // selected tab background color
-          padding: EdgeInsets.symmetric(
-              horizontal: 20, vertical: 5), // navigation bar padding
+          ],
+          curve: Curves.easeOutExpo,
+          duration: Duration(milliseconds: 300),
+          gap: 8,
+          color: Colors.grey[800],
+          activeColor: Colors.purple,
+          iconSize: 24,
+          tabBackgroundColor: Colors.purple.withOpacity(0.1),
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
           tabs: [
             GButton(
               icon: LineIcons.home,
@@ -58,20 +73,11 @@ class _homePageState extends State<homePage> {
               text: 'Profile',
             )
           ],
+          selectedIndex: _isSelectedIndex,
+          onTabChange: _onItemTapped,
         ),
       ),
-      body: ListView(
-        children: [
-          Column(
-            children: [
-              Container(
-                  //
-
-                  ),
-            ],
-          ),
-        ],
-      ),
+      body: widgetOptions[_isSelectedIndex],
     );
   }
 }
