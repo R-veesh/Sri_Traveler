@@ -131,9 +131,10 @@ class _loginPageState extends State<loginPage> {
                         //   }
                         // },
                         onPressed: () {
-                          Navigator.restorablePushNamedAndRemoveUntil(context, "/home", (route) => false);
+                          Navigator.restorablePushNamedAndRemoveUntil(
+                              context, "/home", (route) => false);
                         },
-                        
+
                         child: Text('Login'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: _isPress

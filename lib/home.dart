@@ -8,6 +8,8 @@ import 'package:sri_traveler/home/search.dart';
 import 'package:sri_traveler/home/trip.dart';
 
 class homePage extends StatefulWidget {
+  const homePage({super.key});
+
   // const homePage({super.key});
 
   @override
