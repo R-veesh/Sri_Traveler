@@ -122,14 +122,18 @@ class _loginPageState extends State<loginPage> {
                     SizedBox(height: 40),
                     Center(
                       child: ElevatedButton(
+                        // onPressed: () {
+                        //   setState(() {
+                        //     _isPress = !_isPress;
+                        //   });
+                        //   if (kDebugMode) {
+                        //     print('done');
+                        //   }
+                        // },
                         onPressed: () {
-                          setState(() {
-                            _isPress = !_isPress;
-                          });
-                          if (kDebugMode) {
-                            print('done');
-                          }
+                          Navigator.restorablePushNamedAndRemoveUntil(context, "/home", (route) => false);
                         },
+                        
                         child: Text('Login'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: _isPress
