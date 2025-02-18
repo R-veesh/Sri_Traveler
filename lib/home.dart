@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:sri_traveler/home/HomeScreen.dart';
 import 'package:sri_traveler/home/Profile.dart';
 import 'package:sri_traveler/home/dashbord.dart';
 import 'package:sri_traveler/home/search.dart';
@@ -17,14 +17,14 @@ class homePage extends StatefulWidget {
 }
 
 class _homePageState extends State<homePage> {
-  int _isSelectedIndex = 0;
+  int _isSelectedIndex = 2;
 
   final List<Widget> widgetOptions = const [
-    ProfileScreen(),
-    SearchScreen(),
-    Center(child: Text("data", style: TextStyle(fontSize: 24))),
-    DashboardScreen(),
     TripScreen(),
+    SearchScreen(),
+    HomeScreen(),
+    ProfileScreen(),
+    DashboardScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -45,8 +45,8 @@ class _homePageState extends State<homePage> {
         unselectedItemColor: Colors.blueGrey,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(LineIcons.user),
-            label: 'Profile',
+            icon: Icon(LineIcons.tripadvisor),
+            label: 'Trip',
           ),
           BottomNavigationBarItem(
             icon: Icon(LineIcons.search),
@@ -57,12 +57,12 @@ class _homePageState extends State<homePage> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Dashboard',
+            icon: Icon(LineIcons.user),
+            label: 'Profile',
           ),
           BottomNavigationBarItem(
-            icon: Icon(LineIcons.heart),
-            label: 'Trip',
+            icon: Icon(Icons.settings),
+            label: 'settings',
           ),
         ],
         currentIndex: _isSelectedIndex,
