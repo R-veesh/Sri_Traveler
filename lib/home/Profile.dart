@@ -5,8 +5,15 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Profile'),
+    return Scaffold(
+      appBar: AppBar(
+        leading: BackButton(),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        actions: [
+          IconButton(onPressed: () {}, icon: Icon()),
+        ],
+      ),
     );
   }
 }
