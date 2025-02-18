@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'login.dart';
+import 'package:sri_traveler/login.dart';
 import 'home.dart';
 
 void main() {
