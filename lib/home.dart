@@ -19,7 +19,7 @@ class homePage extends StatefulWidget {
 class _homePageState extends State<homePage> {
   int _isSelectedIndex = 0;
 
-  final List<Widget> widgetOptions = [
+  final List<Widget> widgetOptions = const [
     ProfileScreen(),
     SearchScreen(),
     Center(child: Text("data", style: TextStyle(fontSize: 24))),
@@ -36,49 +36,38 @@ class _homePageState extends State<homePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: Container(
-        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-        child: GNav(
-          rippleColor: Colors.grey,
-          hoverColor: Colors.grey,
-          haptic: true,
-          tabBorderRadius: 18,
-          tabActiveBorder: Border.all(color: Colors.black, width: 1),
-          tabBorder: Border.all(color: Colors.grey, width: 1),
-          tabShadow: [
-            BoxShadow(color: Colors.grey.withOpacity(0.5), blurRadius: 8)
-          ],
-          curve: Curves.easeOutExpo,
-          duration: Duration(milliseconds: 300),
-          gap: 8,
-          color: Colors.grey[800],
-          activeColor: Colors.purple,
-          iconSize: 24,
-          tabBackgroundColor: Colors.purple.withOpacity(0.1),
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-          tabs: [
-            GButton(
-              icon: LineIcons.home,
-              text: 'Home',
-            ),
-            GButton(
-              icon: LineIcons.star,
-              text: 'Likes',
-            ),
-            GButton(
-              icon: LineIcons.search,
-              text: 'Search',
-            ),
-            GButton(
-              icon: LineIcons.user,
-              text: 'Profile',
-            )
-          ],
-          selectedIndex: _isSelectedIndex,
-          onTabChange: _onItemTapped,
-        ),
-      ),
       body: widgetOptions[_isSelectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        showSelectedLabels: true,
+        showUnselectedLabels: false,
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: Colors.amber,
+        unselectedItemColor: Colors.blueGrey,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(LineIcons.user),
+            label: 'Profile',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(LineIcons.search),
+            label: 'Search',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Dashboard',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(LineIcons.heart),
+            label: 'Trip',
+          ),
+        ],
+        currentIndex: _isSelectedIndex,
+        onTap: _onItemTapped,
+      ),
     );
   }
 }
