@@ -39,23 +39,60 @@ class HomeScreen extends StatelessWidget {
         ),
         child: SizedBox(
           height: 150,
-          child: ListTile(
-            leading: Container(
-              width: 100,
-              height: 140,
-              child: Image.asset(
-                trip.tripImagePath,
-                fit: BoxFit.fill,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                flex: 2,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 0, 9, 0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10.0),
+                    child: Image.asset(
+                      trip.tripImagePath,
+                      fit: BoxFit.fill,
+                      width: 130,
+                      height: 130,
+                    ),
+                  ),
+                ),
               ),
-            ),
-            title: Text(
-              trip.tripName,
-              style: TextStyle(fontSize: 20),
-            ),
-            subtitle: Text(
-              trip.tripPlace,
-              style: TextStyle(fontSize: 16),
-            ),
+              Expanded(
+                flex: 3,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    SizedBox(
+                      height: 4,
+                    ),
+                    Text(
+                      trip.tripName,
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontFamily: 'arial',
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      trip.tripPlace,
+                      style: TextStyle(fontSize: 16, color: Colors.grey),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+            // leading: Image.asset(
+            //   trip.tripImagePath,
+            //   fit: BoxFit.fill,
+            // ),
+            // title: Text(
+            //   trip.tripName,
+            //   style: TextStyle(fontSize: 20),
+            // ),
+            // subtitle: Text(
+            //   trip.tripPlace,
+            //   style: TextStyle(fontSize: 16),
+            // ),
           ),
         ),
       ),

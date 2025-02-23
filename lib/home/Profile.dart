@@ -23,6 +23,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: ListView(
         physics: BouncingScrollPhysics(),
         children: [
+          const SizedBox(height: 24),
           ProfileWidget(
             imagePath: User.imagePath,
             onClicked: () async {},
@@ -34,9 +35,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           const SizedBox(height: 24),
           buildBioUser(User),
           const SizedBox(height: 24),
-          Center(
-            child: buildUpgradeButton(),
-          ),
+          // Center(
+          //   child: buildUpgradeButton(),
+          // ),
         ],
       ),
     );
@@ -92,17 +93,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ],
       );
 
-  Widget buildBioUser(User user) => Container(
-        padding: EdgeInsets.symmetric(horizontal: 48),
-        child: Column(
-          children: [
-            const SizedBox(height: 12),
-            Text(
-              user.bio,
-              style: TextStyle(fontSize: 16, height: 1.4),
-              textAlign: TextAlign.center,
-            ),
-          ],
+  Widget buildBioUser(User user) => Card(
+        margin: EdgeInsets.symmetric(horizontal: 48),
+        shadowColor: Colors.black,
+        elevation: 3,
+        child: Padding(
+          padding: EdgeInsets.all(16),
+          child: Column(
+            children: [
+              const SizedBox(height: 12),
+              Text(
+                user.bio,
+                style: TextStyle(fontSize: 16, height: 1.4),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
         ),
       );
 }
