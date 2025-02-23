@@ -1,12 +1,64 @@
 import 'package:flutter/material.dart';
+import 'package:sri_traveler/home/HomeScreen/trip.dart';
+import 'package:sri_traveler/home/HomeScreen/trip_references.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('HomeScreen'),
+    final trips = TripReferences.myTrips;
+
+    return Scaffold(
+      appBar: AppBar(
+        title:
+            Text('Home', style: TextStyle(color: Colors.black, fontSize: 20)),
+        backgroundColor: const Color.fromARGB(255, 216, 238, 89),
+      ),
+      body: trips.isNotEmpty
+          ? ListView.builder(
+              itemCount: trips.length,
+              itemBuilder: (BuildContext context, int index) {
+                return getItem(index, trips[index]);
+              },
+            )
+          : Center(
+              child: Text('No trips available'),
+            ),
+    );
+  }
+
+  Widget getItem(int index, Trip trip) {
+    print("index: $index");
+    return Center(
+      child: Card(
+        shadowColor: Colors.black,
+        elevation: 3,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        child: SizedBox(
+          height: 150,
+          child: ListTile(
+            leading: Container(
+              width: 100,
+              height: 140,
+              child: Image.asset(
+                trip.tripImagePath,
+                fit: BoxFit.fill,
+              ),
+            ),
+            title: Text(
+              trip.tripName,
+              style: TextStyle(fontSize: 20),
+            ),
+            subtitle: Text(
+              trip.tripPlace,
+              style: TextStyle(fontSize: 16),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

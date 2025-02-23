@@ -30,13 +30,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
           const SizedBox(height: 24),
           buildName(User),
           const SizedBox(height: 24),
-          Center(
-            child: buildUpgradeButton(),
-          ),
+          buildSocialMediaLinks(),
           const SizedBox(height: 24),
           buildBioUser(User),
           const SizedBox(height: 24),
-          buildSocialMediaLinks(),
+          Center(
+            child: buildUpgradeButton(),
+          ),
         ],
       ),
     );
