@@ -12,7 +12,7 @@ class TripScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title:
-            Text('Home', style: TextStyle(color: Colors.black, fontSize: 20)),
+            Text('Trip', style: TextStyle(color: Colors.black, fontSize: 20)),
         backgroundColor: const Color.fromARGB(255, 216, 238, 89),
       ),
       body: trips.isNotEmpty
