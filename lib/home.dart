@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:sri_traveler/home/HomeScreen.dart';
+import 'package:sri_traveler/home/TripScreen.dart';
 import 'package:sri_traveler/home/Profile.dart';
 import 'package:sri_traveler/home/dashbord.dart';
 import 'package:sri_traveler/home/search.dart';
-import 'package:sri_traveler/home/trip.dart';
+import 'package:sri_traveler/home/HomeScreen.dart';
 
 class homePage extends StatefulWidget {
   const homePage({super.key});

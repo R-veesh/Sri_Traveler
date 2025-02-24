@@ -5,8 +5,11 @@ class SearchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('SearchScreen'),
+    return Scaffold(
+      appBar: AppBar(
+        elevation: :0,
+        backgroundColor: ,
+      ),
     );
   }
 }
