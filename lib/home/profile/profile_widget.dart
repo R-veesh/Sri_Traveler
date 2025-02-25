@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ProfileWidget extends StatelessWidget {
+class ProfileWidget extends StatefulWidget {
   final String imagePath;
   final VoidCallback onClicked;
 
@@ -10,6 +10,11 @@ class ProfileWidget extends StatelessWidget {
     required this.onClicked,
   }) : super(key: key);
 
+  @override
+  State<ProfileWidget> createState() => _ProfileWidgetState();
+}
+
+class _ProfileWidgetState extends State<ProfileWidget> {
   @override
   Widget build(BuildContext context) {
     final color = Colors.blue; // Set a default color
@@ -28,7 +33,7 @@ class ProfileWidget extends StatelessWidget {
   }
 
   Widget buildImage() {
-    final image = AssetImage(imagePath);
+    final image = AssetImage(widget.imagePath);
     return ClipOval(
       child: Material(
         color: Colors.transparent,
@@ -38,7 +43,7 @@ class ProfileWidget extends StatelessWidget {
           width: 128,
           height: 128,
           child: InkWell(
-            onTap: onClicked,
+            onTap: widget.onClicked,
           ),
         ),
       ),
