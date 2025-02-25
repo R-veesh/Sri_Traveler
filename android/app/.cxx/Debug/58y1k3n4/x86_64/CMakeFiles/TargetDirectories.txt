@@ -1,2 +1,0 @@
-E:/myFlutterProjects/raveesha/Sri_Traveler/android/app/.cxx/Debug/58y1k3n4/x86_64/CMakeFiles/edit_cache.dir
-E:/myFlutterProjects/raveesha/Sri_Traveler/android/app/.cxx/Debug/58y1k3n4/x86_64/CMakeFiles/rebuild_cache.dir
