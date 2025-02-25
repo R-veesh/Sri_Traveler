@@ -44,7 +44,7 @@ class _homePageState extends State<homePage> {
         unselectedItemColor: Colors.blueGrey,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(LineIcons.tripadvisor),
+            icon: Icon(Icons.time_to_leave_sharp),
             label: 'Trip',
           ),
           BottomNavigationBarItem(

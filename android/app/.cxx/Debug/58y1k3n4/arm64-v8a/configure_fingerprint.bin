@@ -2,6 +2,7 @@ C/C++ Structured LogK
 I
 GC:\flutter\packages\flutter_tools\gradle\src\main\groovy\CMakeLists.txtC
 A
+<<<<<<< HEAD
 ?com.android.build.gradle.internal.cxx.io.EncodedFileFingerPrint	å·èêÓ2§ õ ÜÚÏ2u
 s
 qE:\myFlutterProjects\raveesha\Sri_Traveler\android\app\.cxx\Debug\58y1k3n4\arm64-v8a\additional_project_files.txt	å·èêÓ2 õäâÓ2r
@@ -26,3 +27,29 @@ i
 gE:\myFlutterProjects\raveesha\Sri_Traveler\android\app\.cxx\Debug\58y1k3n4\arm64-v8a\prefab_config.json	å·èêÓ2( ”åâÓ2p
 n
 lE:\myFlutterProjects\raveesha\Sri_Traveler\android\app\.cxx\Debug\58y1k3n4\arm64-v8a\symbol_folder_index.txt	æ·èêÓ2c •åâÓ2
+=======
+?com.android.build.gradle.internal.cxx.io.EncodedFileFingerPrint	Ÿù×îÓ2§ õ ÜÚÏ2u
+s
+qE:\myFlutterProjects\raveesha\Sri_Traveler\android\app\.cxx\Debug\58y1k3n4\arm64-v8a\additional_project_files.txt	Ÿù×îÓ2 É§¼ìÓ2r
+p
+nE:\myFlutterProjects\raveesha\Sri_Traveler\android\app\.cxx\Debug\58y1k3n4\arm64-v8a\android_gradle_build.json	Ÿù×îÓ2â Ð§¼ìÓ2w
+u
+sE:\myFlutterProjects\raveesha\Sri_Traveler\android\app\.cxx\Debug\58y1k3n4\arm64-v8a\android_gradle_build_mini.json	 ù×îÓ2« Ý§¼ìÓ2d
+b
+`E:\myFlutterProjects\raveesha\Sri_Traveler\android\app\.cxx\Debug\58y1k3n4\arm64-v8a\build.ninja	 ù×îÓ2¶ä §¼ìÓ2h
+f
+dE:\myFlutterProjects\raveesha\Sri_Traveler\android\app\.cxx\Debug\58y1k3n4\arm64-v8a\build.ninja.txt	 ù×îÓ2m
+k
+iE:\myFlutterProjects\raveesha\Sri_Traveler\android\app\.cxx\Debug\58y1k3n4\arm64-v8a\build_file_index.txt	 ù×îÓ2G å§¼ìÓ2n
+l
+jE:\myFlutterProjects\raveesha\Sri_Traveler\android\app\.cxx\Debug\58y1k3n4\arm64-v8a\compile_commands.json	 ù×îÓ2	r
+p
+nE:\myFlutterProjects\raveesha\Sri_Traveler\android\app\.cxx\Debug\58y1k3n4\arm64-v8a\compile_commands.json.bin	 ù×îÓ2
+x
+v
+tE:\myFlutterProjects\raveesha\Sri_Traveler\android\app\.cxx\Debug\58y1k3n4\arm64-v8a\metadata_generation_command.txt	 ù×îÓ2	 ä§¼ìÓ2k
+i
+gE:\myFlutterProjects\raveesha\Sri_Traveler\android\app\.cxx\Debug\58y1k3n4\arm64-v8a\prefab_config.json	 ù×îÓ2( ä§¼ìÓ2p
+n
+lE:\myFlutterProjects\raveesha\Sri_Traveler\android\app\.cxx\Debug\58y1k3n4\arm64-v8a\symbol_folder_index.txt	 ù×îÓ2c å§¼ìÓ2
+>>>>>>> editing

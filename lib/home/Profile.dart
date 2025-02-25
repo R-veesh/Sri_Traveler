@@ -16,7 +16,24 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
+
+    // this is not the correct way to do this, use this only as a example
+    bool isFbAvailable = true;
+    bool isTwitAvailable = true;
+    bool isinsterAvailable = true;
     final User = UserReferences.myUser;
+
+    // this is not the correct way to do this, use this only as a example
+    
+    if (User.faceBookLink == "") {
+      isFbAvailable = false;
+    }
+    if (User.twitterLink == "") {
+      isTwitAvailable = false;
+    }
+    if (User.instergramLink == "") {
+      isinsterAvailable = false;
+    }
 
     return Scaffold(
       appBar: buildAppBar(context),
@@ -31,7 +48,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           const SizedBox(height: 24),
           buildName(User),
           const SizedBox(height: 24),
-          buildSocialMediaLinks(),
+          buildSocialMediaLinks(
+              isFbAvailable, isTwitAvailable, isinsterAvailable),
           const SizedBox(height: 24),
           buildBioUser(User),
           const SizedBox(height: 24),
@@ -61,35 +79,40 @@ class _ProfileScreenState extends State<ProfileScreen> {
         text: 'Edit the profile',
         onClicked: () {},
       );
-  Widget buildSocialMediaLinks() => Row(
+  Widget buildSocialMediaLinks(bool fb, bool twi, bool ins) => Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          IconButton(
-            icon: Icon(LineIcons.facebook),
-            color: Colors.blue,
-            iconSize: 40,
-            onPressed: () {
-              // Add your Facebook link here
-            },
-          ),
-          const SizedBox(width: 20),
-          IconButton(
-            icon: Icon(LineIcons.twitter),
-            color: Colors.lightBlue,
-            iconSize: 40,
-            onPressed: () {
-              // Add your Twitter link here
-            },
-          ),
-          const SizedBox(width: 20),
-          IconButton(
-            icon: Icon(LineIcons.instagram),
-            color: Colors.purple,
-            iconSize: 40,
-            onPressed: () {
-              // Add your Instagram link here
-            },
-          ),
+          // this is not the correct way to do this, use this only as a example
+          fb
+              ? IconButton(
+                  icon: Icon(LineIcons.facebook),
+                  color: Colors.blue,
+                  iconSize: 40,
+                  onPressed: () {
+                    // Add your Facebook link here
+                  },
+                )
+              : SizedBox(),
+          twi
+              ? IconButton(
+                  icon: Icon(LineIcons.twitter),
+                  color: Colors.lightBlue,
+                  iconSize: 40,
+                  onPressed: () {
+                    // Add your Twitter link here
+                  },
+                )
+              : SizedBox(),
+          ins
+              ? IconButton(
+                  icon: Icon(LineIcons.instagram),
+                  color: Colors.purple,
+                  iconSize: 40,
+                  onPressed: () {
+                    // Add your Instagram link here
+                  },
+                )
+              : SizedBox()
         ],
       );
 
