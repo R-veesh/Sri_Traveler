@@ -12,7 +12,7 @@ class loginPage extends StatefulWidget {
 class _loginPageState extends State<loginPage> {
   @override
   Widget build(BuildContext context) {
-    bool _isPress = true;
+    bool isPress = true;
     double screenHeight = MediaQuery.of(context).size.height;
     double containerHeight = screenHeight - 40 - 150 - 140;
     return Scaffold(
@@ -35,7 +35,7 @@ class _loginPageState extends State<loginPage> {
           Column(
             children: [
               SizedBox(height: 40),
-              Container(
+              SizedBox(
                 height: 200,
                 child: Image.asset(
                   'assets/travel.png',
@@ -134,14 +134,14 @@ class _loginPageState extends State<loginPage> {
                           Navigator.restorablePushNamedAndRemoveUntil(
                               context, "/home", (route) => false);
                         },
-
-                        child: Text('Login'),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: _isPress
+                          backgroundColor: isPress
                               ? Color.fromRGBO(255, 255, 255, 1)
                               : Color.fromRGBO(0, 0, 0, 1),
                           shadowColor: Color.fromRGBO(0, 0, 0, 1),
                         ),
+
+                        child: Text('Login'),
                       ),
                     ),
                   ],
