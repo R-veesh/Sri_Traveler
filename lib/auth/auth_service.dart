@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:sri_traveler/auth/db_Service.dart';
 
 class AuthService {
   final _auth = FirebaseAuth.instance;
@@ -7,32 +8,36 @@ class AuthService {
   Future<User?> createUserWithEmailAndPassword(
       String email, String password) async {
     try {
-      final cred = await _auth.createUserWithEmailAndPassword(
+      // await DbService().saveUserData(email: email);
+      UserCredential credential = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
-      return cred.user;
-    } catch (e) {
-      log("Something went wrong 3");
+      return credential.user;
+      //return "Account Created";
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'email-already-in-use') {
+        log('email-already-in-use');
+      } else {
+        log(e.toString());
+      }
     }
-    return null;
   }
 
-  Future<User?> loginUserWithEmailAndPassword(
+  Future<String> loginUserWithEmailAndPassword(
       String email, String password) async {
     try {
-      final cred = await _auth.signInWithEmailAndPassword(
-          email: email, password: password);
-      return cred.user;
-    } catch (e) {
-      log("Something went wrong 2");
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+      return "Login Successful";
+    } on FirebaseAuthException catch (e) {
+      return e.message.toString();
     }
-    return null;
   }
 
-  Future<void> signout() async {
+  Future<void> signOut() async {
     try {
       await _auth.signOut();
     } catch (e) {
-      log("Something went wrong 1");
+      log("Error signing out: $e");
     }
   }
 }

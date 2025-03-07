@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sri_traveler/auth/auth_service.dart';
 import 'package:sri_traveler/auth/login_screen.dart';
@@ -89,12 +90,14 @@ class _SignupScreenState extends State<SignupScreen> {
         MaterialPageRoute(builder: (context) => const homePage()),
       );
 
-  _signup() async {
-    final user =
+  void _signup() async {
+    User? user =
         await _auth.createUserWithEmailAndPassword(_email.text, _password.text);
     if (user != null) {
       log("User Created Successfully");
       goToHome(context);
+    } else {
+      log("Network Error");
     }
   }
 }
