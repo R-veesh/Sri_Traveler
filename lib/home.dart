@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:sri_traveler/home/TripScreen.dart';
+import 'package:sri_traveler/home/HomeScreen.dart';
 import 'package:sri_traveler/home/Profile.dart';
 import 'package:sri_traveler/home/dashbord.dart';
 import 'package:sri_traveler/home/search.dart';
-import 'package:sri_traveler/home/HomeScreen.dart';
+import 'package:sri_traveler/home/TripScreen.dart';
 
 class homePage extends StatefulWidget {
   const homePage({super.key});
@@ -44,7 +44,7 @@ class _homePageState extends State<homePage> {
         unselectedItemColor: Colors.blueGrey,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.time_to_leave_sharp),
+            icon: Icon(LineIcons.tripadvisor),
             label: 'Trip',
           ),
           BottomNavigationBarItem(

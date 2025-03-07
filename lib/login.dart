@@ -11,30 +11,16 @@ class loginPage extends StatefulWidget {
 class _loginPageState extends State<loginPage> {
   @override
   Widget build(BuildContext context) {
-    bool _isPress = true;
+    bool isPress = true;
     double screenHeight = MediaQuery.of(context).size.height;
     double containerHeight = screenHeight - 40 - 150 - 140;
     return Scaffold(
-      //app_bra
-      // appBar: AppBar(
-      //   backgroundColor: Color.fromRGBO(209, 221, 35, 1),
-      //   title: Text(
-      //     "Sri Traveler",
-      //     style: TextStyle(
-      //       fontSize: 20,
-      //       fontWeight: FontWeight.bold,
-      //       color: Colors.black,
-      //     ),
-      //   ),
-      //   centerTitle: true,
-      // ),
-      //body_part
       body: ListView(
         children: [
           Column(
             children: [
               SizedBox(height: 40),
-              Container(
+              SizedBox(
                 height: 200,
                 child: Image.asset(
                   'assets/travel.png',
@@ -121,26 +107,17 @@ class _loginPageState extends State<loginPage> {
                     SizedBox(height: 40),
                     Center(
                       child: ElevatedButton(
-                        // onPressed: () {
-                        //   setState(() {
-                        //     _isPress = !_isPress;
-                        //   });
-                        //   if (kDebugMode) {
-                        //     print('done');
-                        //   }
-                        // },
                         onPressed: () {
                           Navigator.restorablePushNamedAndRemoveUntil(
                               context, "/home", (route) => false);
                         },
-
-                        child: Text('Login'),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: _isPress
+                          backgroundColor: isPress
                               ? Color.fromRGBO(255, 255, 255, 1)
                               : Color.fromRGBO(0, 0, 0, 1),
                           shadowColor: Color.fromRGBO(0, 0, 0, 1),
                         ),
+                        child: Text('Login'),
                       ),
                     ),
                   ],

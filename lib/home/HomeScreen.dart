@@ -26,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       extendBody: true,
       body: Container(
-        color: const Color.fromARGB(255, 236, 236, 189),
+        color: const Color.fromARGB(255, 238, 238, 125),
         child: ListView(
           children: [
             Container(
