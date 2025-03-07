@@ -11,7 +11,7 @@ class AuthService {
           email: email, password: password);
       return cred.user;
     } catch (e) {
-      log("Something went wrong");
+      log("Something went wrong 3");
     }
     return null;
   }
@@ -23,7 +23,7 @@ class AuthService {
           email: email, password: password);
       return cred.user;
     } catch (e) {
-      log("Something went wrong");
+      log("Something went wrong 2");
     }
     return null;
   }
@@ -32,7 +32,7 @@ class AuthService {
     try {
       await _auth.signOut();
     } catch (e) {
-      log("Something went wrong");
+      log("Something went wrong 1");
     }
   }
 }
