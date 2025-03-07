@@ -1,5 +1,4 @@
 // import 'package:flutter/foundation.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class loginPage extends StatefulWidget {
@@ -16,20 +15,6 @@ class _loginPageState extends State<loginPage> {
     double screenHeight = MediaQuery.of(context).size.height;
     double containerHeight = screenHeight - 40 - 150 - 140;
     return Scaffold(
-      //app_bra
-      // appBar: AppBar(
-      //   backgroundColor: Color.fromRGBO(209, 221, 35, 1),
-      //   title: Text(
-      //     "Sri Traveler",
-      //     style: TextStyle(
-      //       fontSize: 20,
-      //       fontWeight: FontWeight.bold,
-      //       color: Colors.black,
-      //     ),
-      //   ),
-      //   centerTitle: true,
-      // ),
-      //body_part
       body: ListView(
         children: [
           Column(
@@ -122,14 +107,6 @@ class _loginPageState extends State<loginPage> {
                     SizedBox(height: 40),
                     Center(
                       child: ElevatedButton(
-                        // onPressed: () {
-                        //   setState(() {
-                        //     _isPress = !_isPress;
-                        //   });
-                        //   if (kDebugMode) {
-                        //     print('done');
-                        //   }
-                        // },
                         onPressed: () {
                           Navigator.restorablePushNamedAndRemoveUntil(
                               context, "/home", (route) => false);
@@ -140,7 +117,6 @@ class _loginPageState extends State<loginPage> {
                               : Color.fromRGBO(0, 0, 0, 1),
                           shadowColor: Color.fromRGBO(0, 0, 0, 1),
                         ),
-
                         child: Text('Login'),
                       ),
                     ),
