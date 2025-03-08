@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:sri_traveler/Splash_Screen.dart';
 import 'package:sri_traveler/auth/login_screen.dart';
 import 'package:sri_traveler/home/HomeScreen.dart';
 
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: {
-        "/": (context) => LoginScreen(),
+        "/": (context) => SplashScreen(),
         "/login": (context) => LoginScreen(),
         "/home": (context) => HomeScreen(),
       },

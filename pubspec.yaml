@@ -37,6 +37,8 @@ dependencies:
   firebase_core: ^3.12.1
   firebase_auth: ^5.5.1
   cloud_firestore: ^5.6.5
+  flutter_img: ^0.2.1+159
+  # flutter_native_splash: ^2.3.2
   # androidx.multidex:multidex: ^2.0.1
 
 
