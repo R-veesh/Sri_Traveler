@@ -67,12 +67,23 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                   const SizedBox(height: 20),
+                  _buildTripSelection(),
                 ],
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  _buildTripSelection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text('Select your next trip', style: TextStyle(fontSize: 18)),
+        // Add your trip selection UI here
+      ],
     );
   }
 }

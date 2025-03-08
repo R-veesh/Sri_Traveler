@@ -13,7 +13,7 @@ AppBar buildAppBar(BuildContext context) {
           FirebaseAuth.instance.signOut();
           Navigator.pushNamed(context, "/login");
         },
-        icon: Icon(Icons.dark_mode_rounded),
+        icon: Icon(Icons.logout_outlined),
       ),
     ],
   );

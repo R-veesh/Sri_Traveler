@@ -86,6 +86,8 @@ class _LoginScreenState extends State<LoginScreen> {
     if (user != null) {
       log("User Logged In");
       goToHome(context);
+    } else {
+      goToSignup(context);
     }
   }
 }
