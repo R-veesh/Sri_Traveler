@@ -112,9 +112,8 @@ class _loginPageState extends State<loginPage> {
                               context, "/home", (route) => false);
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: isPress
-                              ? Color.fromRGBO(255, 255, 255, 1)
-                              : Color.fromRGBO(0, 0, 0, 1),
+                          backgroundColor: Color.fromRGBO(255, 255, 255, 1),
+                          //: Color.fromRGBO(0, 0, 0, 1),
                           shadowColor: Color.fromRGBO(0, 0, 0, 1),
                         ),
                         child: Text('Login'),

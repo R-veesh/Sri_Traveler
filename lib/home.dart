@@ -40,7 +40,7 @@ class _homePageState extends State<homePage> {
         showSelectedLabels: true,
         showUnselectedLabels: false,
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.amber,
+        selectedItemColor: const Color.fromARGB(255, 0, 0, 0),
         unselectedItemColor: Colors.blueGrey,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(

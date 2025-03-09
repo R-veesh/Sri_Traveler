@@ -16,11 +16,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
     String greetingMessage;
     if (currentHour < 12) {
-      greetingMessage = "Good Morning";
+      greetingMessage = "Good Morning!";
     } else if (currentHour < 17) {
-      greetingMessage = "Good Afternoon";
+      greetingMessage = "Good Afternoon!";
     } else {
-      greetingMessage = "Good Evening";
+      greetingMessage = "Good Evening!";
     }
 
     return Scaffold(
@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: ListView(
           children: [
             Container(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.fromLTRB(15, 20, 15, 20),
               child: Column(
                 children: [
                   Row(
@@ -39,35 +39,38 @@ class _HomeScreenState extends State<HomeScreen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          //greetingMessage,
                           Text(
-                            greetingMessage,
-                            style: const TextStyle(
-                              fontSize: 26,
-                              fontWeight: FontWeight.w300,
-                            ),
-                            textDirection: TextDirection.ltr,
-                          ),
-                          Text(
-                            user.name,
+                            'Hi,' + user.name,
                             style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
+                          Text(
+                            greetingMessage,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w300,
+                            ),
+                            textDirection: TextDirection.ltr,
+                          ),
+                          //user
                         ],
                       ),
                       CircleAvatar(
-                        radius: 30,
+                        radius: 25,
                         backgroundImage: AssetImage(user.imagePath),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 5),
+                  const SizedBox(height: 15),
                   __SpecialTitial(),
+                  const SizedBox(height: 10),
                   _SpecialIcone(),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 15),
                   _buildTripSelection(),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 0),
                   _buildTrip(),
                   const SizedBox(height: 30),
                 ],
@@ -81,14 +84,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildTripSelection() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 6.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              "Select your next trip",
+              "Select Your Next Trip",
               textAlign: TextAlign.right,
               style: TextStyle(
                 fontSize: 20,
@@ -103,6 +106,33 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildTrip() {
+    final List<Map<String, String>> places = const [
+      {
+        'name': 'Cascade',
+        'location': 'Canada, Banff',
+        'image': 'assets/HD-wallpaper-sigiriya-sri-lanka-sri-lanka.jpg'
+      },
+      {
+        'name': 'Yosemite',
+        'location': 'USA, California',
+        'image': 'assets/HD-wallpaper-sigiriya-sri-lanka-sri-lanka.jpg'
+      },
+      {
+        'name': 'Yosemite',
+        'location': 'USA, California',
+        'image': 'assets/HD-wallpaper-sigiriya-sri-lanka-sri-lanka.jpg'
+      },
+      {
+        'name': 'Yosemite',
+        'location': 'USA, California',
+        'image': 'assets/HD-wallpaper-sigiriya-sri-lanka-sri-lanka.jpg'
+      },
+      {
+        'name': 'Yosemite',
+        'location': 'USA, California',
+        'image': 'assets/HD-wallpaper-sigiriya-sri-lanka-sri-lanka.jpg'
+      },
+    ];
     return DefaultTabController(
       length: 3,
       child: Column(
@@ -124,17 +154,18 @@ class _HomeScreenState extends State<HomeScreen> {
             child: TabBarView(
               children: [
                 //tab1
-                Container(
-                  width: 200,
-                  height: 300,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.white,
-                    image: DecorationImage(
-                      image: AssetImage(
-                          'assets/HD-wallpaper-sigiriya-sri-lanka-sri-lanka.jpg'),
-                      fit: BoxFit.cover,
-                    ),
+                SizedBox(
+                  height: 200,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: places.length,
+                    itemBuilder: (context, index) {
+                      return PlaceCard(
+                        name: places[index]['name']!,
+                        location: places[index]['location']!,
+                        image: places[index]['image']!,
+                      );
+                    },
                   ),
                 ),
                 //tab2
@@ -174,54 +205,113 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _SpecialIcone() {
     final List<Map<String, dynamic>> iconData = [
-      {'icon': Icons.search, 'label': 'Select'},
-      {'icon': Icons.book, 'label': 'Booking'},
-      {'icon': Icons.favorite, 'label': 'Save'},
-      {'icon': Icons.home, 'label': 'Rent Place'},
+      {
+        'icon': Icons.select_all,
+        'label': 'Select',
+        'onTap': () => print('Select tapped')
+      },
+      {
+        'icon': Icons.book,
+        'label': 'Booking',
+        'onTap': () => print('Booking tapped')
+      },
+      {
+        'icon': Icons.save,
+        'label': 'Save',
+        'onTap': () => print('Save tapped')
+      },
+      {
+        'icon': Icons.home,
+        'label': 'Rent Place',
+        'onTap': () => print('Rent Place tapped'),
+      },
     ];
 
-    return SizedBox(
-      height: 110, // Adjust height as needed
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: iconData.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                Container(
-                  width: 60,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: Offset(2, 4),
-                      ),
-                    ],
-                    color: const Color.fromARGB(255, 255, 255, 255),
-                    borderRadius: BorderRadius.circular(
-                        20), // Makes it square with rounded corners
-                  ),
-                  alignment: Alignment.center,
-                  child: Icon(
-                    iconData[index]['icon'],
-                    size: 30,
-                    color: const Color.fromARGB(255, 0, 0, 0),
-                  ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: iconData.map((item) {
+        return Column(
+          children: [
+            ElevatedButton(
+              onPressed: () => item['onTap'](),
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16), // Rounded corners
                 ),
-                const SizedBox(height: 5),
-                Text(
-                  iconData[index]['label'],
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                ),
-              ],
+                padding: const EdgeInsets.all(16),
+                backgroundColor: Colors.white,
+                shadowColor: Colors.grey.withOpacity(0.5),
+                elevation: 5,
+              ),
+              child: Icon(
+                item['icon'],
+                size: 30,
+                color: const Color.fromARGB(255, 0, 0, 0),
+              ),
             ),
-          );
-        },
+            const SizedBox(height: 5),
+            Text(
+              item['label'],
+              style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.normal,
+                  color: Color.fromARGB(255, 0, 0, 0)),
+            ),
+          ],
+        );
+      }).toList(),
+    );
+  }
+}
+
+class PlaceCard extends StatelessWidget {
+  final String name;
+  final String location;
+  final String image;
+
+  const PlaceCard(
+      {super.key,
+      required this.name,
+      required this.location,
+      required this.image});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 200,
+      margin: const EdgeInsets.only(right: 12),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        image: DecorationImage(image: AssetImage(image), fit: BoxFit.cover),
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          gradient: LinearGradient(
+            begin: Alignment.bottomCenter,
+            end: Alignment.topCenter,
+            colors: [Colors.black.withOpacity(0.6), Colors.transparent],
+          ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(
+              Icons.location_on_sharp,
+              size: 20,
+              color: Colors.white60,
+            ),
+            Text(name,
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold)),
+            Text(location,
+                style: const TextStyle(color: Colors.white70, fontSize: 14)),
+          ],
+        ),
       ),
     );
   }
