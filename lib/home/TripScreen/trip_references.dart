@@ -1,4 +1,4 @@
-import 'package:sri_traveler/home/HomeScreen/trip.dart';
+import 'package:sri_traveler/home/TripScreen/trip.dart';
 
 class TripReferences {
   static final List<Trip> myTrips = [

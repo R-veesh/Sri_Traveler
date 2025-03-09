@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sri_traveler/home/HomeScreen/trip.dart';
-import 'package:sri_traveler/home/HomeScreen/trip_references.dart';
+import 'package:sri_traveler/home/TripScreen/trip.dart';
+import 'package:sri_traveler/home/TripScreen/trip_references.dart';
 
 class TripScreen extends StatelessWidget {
   const TripScreen({super.key});
