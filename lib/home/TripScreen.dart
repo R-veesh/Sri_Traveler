@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sri_traveler/home/TripScreen/trip.dart';
 import 'package:sri_traveler/home/TripScreen/trip_references.dart';
+import 'package:sri_traveler/home/TripScreen/TripDetailScreen.dart';
 
 class TripScreen extends StatelessWidget {
   const TripScreen({super.key});
@@ -19,7 +20,7 @@ class TripScreen extends StatelessWidget {
           ? ListView.builder(
               itemCount: trips.length,
               itemBuilder: (BuildContext context, int index) {
-                return getItem(index, trips[index]);
+                return getItem(context, index, trips[index]);
               },
             )
           : Center(
@@ -28,59 +29,70 @@ class TripScreen extends StatelessWidget {
     );
   }
 
-  Widget getItem(int index, Trip trip) {
+  Widget getItem(BuildContext context, int index, Trip trip) {
     print("index: $index");
     return Center(
-      child: Card(
-        shadowColor: Colors.black,
-        elevation: 3,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0),
-        ),
-        child: SizedBox(
-          height: 150,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                flex: 2,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 0, 9, 0),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10.0),
-                    child: Image.asset(
-                      trip.tripImagePath,
-                      fit: BoxFit.fill,
-                      width: 130,
-                      height: 130,
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => TripDetailScreen(trip: trip),
+            ),
+          );
+        },
+        child: Card(
+          shadowColor: Colors.black,
+          color: const Color.fromARGB(173, 190, 190, 190),
+          elevation: 3,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          child: SizedBox(
+            height: 150,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 0, 9, 0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10.0),
+                      child: Image.asset(
+                        trip.tripImagePath,
+                        fit: BoxFit.fill,
+                        width: 130,
+                        height: 130,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Expanded(
-                flex: 3,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    SizedBox(
-                      height: 4,
-                    ),
-                    Text(
-                      trip.tripName,
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontFamily: 'arial',
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      trip.tripPlace,
-                      style: TextStyle(fontSize: 16, color: Colors.grey),
-                    ),
-                  ],
+                Expanded(
+                  flex: 3,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      SizedBox(
+                        height: 4,
+                      ),
+                      Text(
+                        trip.tripName,
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontFamily: 'arial',
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        trip.tripPlace,
+                        style: TextStyle(fontSize: 16, color: Colors.grey),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

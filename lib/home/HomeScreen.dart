@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sri_traveler/home/TripScreen/trip_references.dart';
 import 'package:sri_traveler/home/profile/user_references.dart';
+import 'package:sri_traveler/home/TripScreen/trip.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -22,7 +24,6 @@ class _HomeScreenState extends State<HomeScreen> {
     } else {
       greetingMessage = "Good Evening!";
     }
-
     return Scaffold(
       extendBody: true,
       body: Container(
@@ -39,9 +40,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          //greetingMessage,
                           Text(
-                            'Hi,' + user.name,
+                            'Hi, ${user.name}',
                             style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -55,7 +55,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             textDirection: TextDirection.ltr,
                           ),
-                          //user
                         ],
                       ),
                       CircleAvatar(
@@ -65,12 +64,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                   const SizedBox(height: 15),
-                  __SpecialTitial(),
+                  _specialTitle(),
                   const SizedBox(height: 10),
-                  _SpecialIcone(),
+                  _specialIcons(),
                   const SizedBox(height: 15),
                   _buildTripSelection(),
-                  const SizedBox(height: 0),
                   _buildTrip(),
                   const SizedBox(height: 30),
                 ],
@@ -85,54 +83,23 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildTripSelection() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 6.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              "Select Your Next Trip",
-              textAlign: TextAlign.right,
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                fontFamily: "Arial",
-              ),
-            ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          "Select Your Next Trip",
+          textAlign: TextAlign.left,
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            fontFamily: "Arial",
           ),
-        ],
+        ),
       ),
     );
   }
 
   Widget _buildTrip() {
-    final List<Map<String, String>> places = const [
-      {
-        'name': 'Cascade',
-        'location': 'Canada, Banff',
-        'image': 'assets/HD-wallpaper-sigiriya-sri-lanka-sri-lanka.jpg'
-      },
-      {
-        'name': 'Yosemite',
-        'location': 'USA, California',
-        'image': 'assets/HD-wallpaper-sigiriya-sri-lanka-sri-lanka.jpg'
-      },
-      {
-        'name': 'Yosemite',
-        'location': 'USA, California',
-        'image': 'assets/HD-wallpaper-sigiriya-sri-lanka-sri-lanka.jpg'
-      },
-      {
-        'name': 'Yosemite',
-        'location': 'USA, California',
-        'image': 'assets/HD-wallpaper-sigiriya-sri-lanka-sri-lanka.jpg'
-      },
-      {
-        'name': 'Yosemite',
-        'location': 'USA, California',
-        'image': 'assets/HD-wallpaper-sigiriya-sri-lanka-sri-lanka.jpg'
-      },
-    ];
+    final trips = TripReferences.myTrips;
     return DefaultTabController(
       length: 3,
       child: Column(
@@ -141,37 +108,19 @@ class _HomeScreenState extends State<HomeScreen> {
             labelColor: Color.fromARGB(255, 89, 21, 21),
             indicatorColor: Color.fromARGB(255, 0, 0, 0),
             tabs: [
-              Tab(text: 'History'),
-              Tab(text: 'History'),
+              Tab(text: 'Popular'),
+              Tab(text: 'Recommended'),
               Tab(text: 'History'),
             ],
           ),
-          SizedBox(
-            height: 20,
-          ),
+          const SizedBox(height: 20),
           SizedBox(
             height: 300,
             child: TabBarView(
               children: [
-                //tab1
-                SizedBox(
-                  height: 200,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: places.length,
-                    itemBuilder: (context, index) {
-                      return PlaceCard(
-                        name: places[index]['name']!,
-                        location: places[index]['location']!,
-                        image: places[index]['image']!,
-                      );
-                    },
-                  ),
-                ),
-                //tab2
-                Container(child: Icon(Icons.directions_transit)),
-                //tab3
-                Container(child: Icon(Icons.directions_bike)),
+                _tripListView(trips),
+                _tripListView(trips),
+                _tripListView(trips),
               ],
             ),
           ),
@@ -180,51 +129,47 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget __SpecialTitial() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              "Discover",
-              textAlign: TextAlign.right,
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                fontFamily: "Arial",
-              ),
-            ),
-          ),
-        ],
+  Widget _tripListView(List<Trip> trips) {
+    return SizedBox(
+      height: 200,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: trips.length,
+        itemBuilder: (context, index) {
+          return PlaceCard(
+            name: trips[index].tripName,
+            location: trips[index].tripPlace,
+            image: trips[index].tripImagePath,
+          );
+        },
       ),
     );
   }
 
-  Widget _SpecialIcone() {
+  Widget _specialTitle() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          "Discover",
+          textAlign: TextAlign.left,
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            fontFamily: "Arial",
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _specialIcons() {
     final List<Map<String, dynamic>> iconData = [
-      {
-        'icon': Icons.select_all,
-        'label': 'Select',
-        'onTap': () => print('Select tapped')
-      },
-      {
-        'icon': Icons.book,
-        'label': 'Booking',
-        'onTap': () => print('Booking tapped')
-      },
-      {
-        'icon': Icons.save,
-        'label': 'Save',
-        'onTap': () => print('Save tapped')
-      },
-      {
-        'icon': Icons.home,
-        'label': 'Rent Place',
-        'onTap': () => print('Rent Place tapped'),
-      },
+      {'icon': Icons.select_all, 'label': 'Select'},
+      {'icon': Icons.book, 'label': 'Booking'},
+      {'icon': Icons.save, 'label': 'Save'},
+      {'icon': Icons.home, 'label': 'Rent Place'},
     ];
 
     return Row(
@@ -233,29 +178,22 @@ class _HomeScreenState extends State<HomeScreen> {
         return Column(
           children: [
             ElevatedButton(
-              onPressed: () => item['onTap'](),
+              onPressed: () {},
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16), // Rounded corners
+                  borderRadius: BorderRadius.circular(16),
                 ),
                 padding: const EdgeInsets.all(16),
                 backgroundColor: Colors.white,
                 shadowColor: Colors.grey.withOpacity(0.5),
                 elevation: 5,
               ),
-              child: Icon(
-                item['icon'],
-                size: 30,
-                color: const Color.fromARGB(255, 0, 0, 0),
-              ),
+              child: Icon(item['icon'], size: 30, color: Colors.black),
             ),
             const SizedBox(height: 5),
             Text(
               item['label'],
-              style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.normal,
-                  color: Color.fromARGB(255, 0, 0, 0)),
+              style: const TextStyle(fontSize: 14, color: Colors.black),
             ),
           ],
         );
@@ -269,11 +207,12 @@ class PlaceCard extends StatelessWidget {
   final String location;
   final String image;
 
-  const PlaceCard(
-      {super.key,
-      required this.name,
-      required this.location,
-      required this.image});
+  const PlaceCard({
+    super.key,
+    required this.name,
+    required this.location,
+    required this.image,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -298,11 +237,8 @@ class PlaceCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(
-              Icons.location_on_sharp,
-              size: 20,
-              color: Colors.white60,
-            ),
+            const Icon(Icons.location_on_sharp,
+                size: 20, color: Colors.white60),
             Text(name,
                 style: const TextStyle(
                     color: Colors.white,
