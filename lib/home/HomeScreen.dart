@@ -16,6 +16,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final int currentHour = DateTime.now().hour;
     final user = UserReferences.myUser;
+    //screen size
+    double screenHeight = MediaQuery.of(context).size.height;
+    double containerHeight = screenHeight - 40 - 150 - 170;
 
     String greetingMessage;
     if (currentHour < 12) {
@@ -28,53 +31,72 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       extendBody: true,
       body: Container(
-        color: const Color.fromARGB(137, 253, 253, 163),
+        color: const Color.fromARGB(129, 180, 230, 255),
         child: ListView(
+          shrinkWrap: true,
+          physics: AlwaysScrollableScrollPhysics(),
           children: [
-            Container(
+            Padding(
               padding: const EdgeInsets.fromLTRB(15, 20, 15, 20),
-              child: Column(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Hi, ${user.name}',
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            greetingMessage,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w300,
-                            ),
-                            textDirection: TextDirection.ltr,
-                          ),
-                        ],
+                      Text(
+                        'Hi, ${user.name}',
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                      CircleAvatar(
-                        radius: 25,
-                        backgroundImage: AssetImage(user.imagePath),
+                      Text(
+                        greetingMessage,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w300,
+                        ),
+                        textDirection: TextDirection.ltr,
                       ),
                     ],
                   ),
-                  const SizedBox(height: 15),
-                  _specialTitle(),
-                  const SizedBox(height: 10),
-                  _specialIcons(),
-                  const SizedBox(height: 15),
-                  _buildTripSelection(),
-                  _buildTrip(),
-                  const SizedBox(height: 30),
+                  CircleAvatar(
+                    radius: 25,
+                    backgroundImage: AssetImage(user.imagePath),
+                  ),
                 ],
               ),
             ),
+            Container(
+              margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+              width: double.infinity,
+              constraints: BoxConstraints(
+                minHeight: containerHeight,
+              ),
+              decoration: BoxDecoration(
+                color: Color.fromRGBO(255, 255, 255, 1),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                ),
+              ),
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(15, 0, 15, 20),
+                child: Column(
+                  children: [
+                    SizedBox(height: 15),
+                    _specialTitle(),
+                    const SizedBox(height: 10),
+                    _specialIcons(),
+                    const SizedBox(height: 15),
+                    _buildTripSelection(),
+                    _buildTrip(),
+                    const SizedBox(height: 30),
+                  ],
+                ),
+              ),
+            )
           ],
         ),
       ),
