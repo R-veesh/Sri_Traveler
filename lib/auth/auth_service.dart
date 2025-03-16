@@ -19,6 +19,7 @@ class AuthService {
       } else {
         log(e.toString());
       }
+      return null;
     }
   }
 

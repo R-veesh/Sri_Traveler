@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:sri_traveler/home/profile/appBar_widget.dart';
-import 'package:sri_traveler/home/profile/button_widget.dart';
 import 'package:sri_traveler/home/profile/profile_widget.dart';
 import 'package:sri_traveler/home/profile/user.dart';
 import 'package:sri_traveler/home/profile/user_references.dart';

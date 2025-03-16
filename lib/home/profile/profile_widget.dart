@@ -29,11 +29,6 @@ class ProfileWidget extends StatelessWidget {
   }
 
   Widget buildImage() {
-    final imageWidget = imagePath.startsWith('assets')
-        ? Image.asset(imagePath, fit: BoxFit.cover, width: 128, height: 128)
-        : Image.file(File(imagePath),
-            fit: BoxFit.cover, width: 128, height: 128);
-
     return ClipOval(
       child: Material(
         color: Colors.transparent,

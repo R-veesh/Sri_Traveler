@@ -11,7 +11,6 @@ class loginPage extends StatefulWidget {
 class _loginPageState extends State<loginPage> {
   @override
   Widget build(BuildContext context) {
-    bool isPress = true;
     double screenHeight = MediaQuery.of(context).size.height;
     double containerHeight = screenHeight - 40 - 150 - 140;
     return Scaffold(
