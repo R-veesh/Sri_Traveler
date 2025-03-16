@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sri_traveler/home/TripScreen/trip.dart';
-import 'package:sri_traveler/home/TripScreen/trip_references.dart';
 
 class TripDetailScreen extends StatefulWidget {
   final Trip trip;
@@ -23,7 +22,7 @@ class _TripDetailScreenState extends State<TripDetailScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.trip.tripName),
-        backgroundColor: Colors.amber[200],
+        backgroundColor: const Color.fromARGB(129, 180, 230, 255),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -72,7 +71,7 @@ class _TripDetailScreenState extends State<TripDetailScreen> {
                         style: TextStyle(fontSize: 14),
                       ),
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(205, 0, 0, 0),
+                        padding: const EdgeInsets.fromLTRB(205, 5, 0, 0),
                         child: Container(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 12, vertical: 6),
