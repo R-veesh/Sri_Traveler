@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sri_traveler/home/TripScreen/trip.dart';
+import 'package:sri_traveler/home/TripScreen/trip_references.dart';
 
 class TripDetailScreen extends StatefulWidget {
   final Trip trip;
@@ -16,7 +17,9 @@ class _TripDetailScreenState extends State<TripDetailScreen> {
   List<String> comments = []; // Store user comments
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(
+    BuildContext context,
+  ) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.trip.tripName),
@@ -24,7 +27,7 @@ class _TripDetailScreenState extends State<TripDetailScreen> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(7.0),
           child: Card(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12.0),
@@ -67,6 +70,25 @@ class _TripDetailScreenState extends State<TripDetailScreen> {
                       Text(
                         widget.trip.tripDescription,
                         style: TextStyle(fontSize: 14),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(205, 0, 0, 0),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 6),
+                          decoration: BoxDecoration(
+                            color: Color.fromARGB(176, 194, 246, 200),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Text(
+                            '\$${widget.trip.tripPrice}',
+                            style: const TextStyle(
+                              color: Color.fromARGB(255, 0, 0, 0),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
                       ),
                       SizedBox(height: 10),
                       Row(

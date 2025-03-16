@@ -69,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             Container(
-              margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+              margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
               width: double.infinity,
               constraints: BoxConstraints(
                 minHeight: containerHeight,

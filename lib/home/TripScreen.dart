@@ -14,7 +14,7 @@ class TripScreen extends StatelessWidget {
       appBar: AppBar(
         title:
             Text('Trip', style: TextStyle(color: Colors.black, fontSize: 20)),
-        backgroundColor: const Color.fromARGB(255, 216, 238, 89),
+        backgroundColor: const Color.fromARGB(129, 180, 230, 255),
       ),
       body: trips.isNotEmpty
           ? ListView.builder(
@@ -43,7 +43,7 @@ class TripScreen extends StatelessWidget {
         },
         child: Card(
           shadowColor: Colors.black,
-          color: const Color.fromARGB(173, 190, 190, 190),
+          color: const Color.fromARGB(129, 251, 254, 255),
           elevation: 3,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15.0),
@@ -87,6 +87,29 @@ class TripScreen extends StatelessWidget {
                       Text(
                         trip.tripPlace,
                         style: TextStyle(fontSize: 16, color: Colors.grey),
+                      ),
+                      const Spacer(),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 0, 9, 10),
+                        child: Align(
+                          alignment: Alignment.bottomRight,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 6),
+                            decoration: BoxDecoration(
+                              color: Color.fromARGB(177, 255, 255, 255),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Text(
+                              '\$${trip.tripPrice}',
+                              style: const TextStyle(
+                                color: Color.fromARGB(255, 0, 0, 0),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
                     ],
                   ),
