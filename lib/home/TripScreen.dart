@@ -61,7 +61,7 @@ class TripScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10.0),
                       child: Image.asset(
                         trip.tripImagePath,
-                        fit: BoxFit.fill,
+                        fit: BoxFit.cover,
                         width: 130,
                         height: 130,
                       ),

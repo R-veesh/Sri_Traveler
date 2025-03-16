@@ -1,3 +1,34 @@
+// import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:flutter/material.dart';
+// import 'package:sri_traveler/home/TripScreen/trip.dart';
+
+// class TripService {
+//   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+//   // Fetch trips from Firestore
+//   Future<List<Trip>> getTrips() async {
+//     try {
+//       // Get trips from the 'trips' collection in Firestore
+//       QuerySnapshot snapshot = await _firestore.collection('trips').get();
+
+//       // Convert documents into Trip objects
+//       return snapshot.docs.map((doc) {
+//         return Trip(
+//           tripImagePath: doc['tripImagePath'],
+//           tripName: doc['tripName'],
+//           tripCode: doc['tripCode'],
+//           tripPlace: doc['tripPlace'],
+//           tripPrice: doc['tripPrice'],
+//           tripDescription: doc['tripDescription'],
+//         );
+//       }).toList();
+//     } catch (e) {
+//       print('Error fetching trips: $e');
+//       return [];
+//     }
+//   }
+// }
+
 import 'package:sri_traveler/home/TripScreen/trip.dart';
 
 class TripReferences {

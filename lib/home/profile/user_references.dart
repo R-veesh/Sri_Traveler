@@ -1,11 +1,15 @@
 import 'package:sri_traveler/home/profile/user.dart';
 
 class UserReferences {
-  static final /*const*/ myUser = User(
+  static User myUser = User(
     imagePath: 'assets/5-250x250.jpg',
-    name: 'raveesha',
-    email: 'test@gamil.com',
-    bio: 'im astronaut andddddddd',
+    name: 'Raveesha',
+    email: 'test@gmail.com',
+    bio: 'I’m an astronaut and traveler!',
     isDarkMode: false,
   );
+
+  static void updateUser(User updatedUser) {
+    myUser = updatedUser;
+  }
 }

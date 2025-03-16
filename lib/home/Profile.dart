@@ -5,6 +5,7 @@ import 'package:sri_traveler/home/profile/button_widget.dart';
 import 'package:sri_traveler/home/profile/profile_widget.dart';
 import 'package:sri_traveler/home/profile/user.dart';
 import 'package:sri_traveler/home/profile/user_references.dart';
+import 'package:sri_traveler/home/profile/edit_profile_screen.dart'; // Import EditProfileScreen
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -16,7 +17,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
-    final User = UserReferences.myUser;
+    final user = UserReferences.myUser; // Fixed variable name
 
     return Scaffold(
       appBar: buildAppBar(context),
@@ -25,18 +26,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
         children: [
           const SizedBox(height: 24),
           ProfileWidget(
-            imagePath: User.imagePath,
-            onClicked: () async {},
+            imagePath: user.imagePath,
+            onClicked_1: () async {
+              await Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => EditProfileScreen()),
+              );
+              setState(() {});
+            },
           ),
           const SizedBox(height: 24),
-          buildName(User),
+          buildName(user),
           const SizedBox(height: 24),
           buildSocialMediaLinks(),
           const SizedBox(height: 24),
-          buildBioUser(User),
+          buildBioUser(user),
           const SizedBox(height: 24),
           // Center(
-          //   child: buildUpgradeButton(),
+          //   child: buildEditProfileButton(),
           // ),
         ],
       ),
@@ -57,10 +64,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ],
       );
 
-  Widget buildUpgradeButton() => ButtonWidget(
-        text: 'Edit the profile',
-        onClicked: () {},
-      );
+  // Widget buildEditProfileButton() => ButtonWidget(
+  //       text: 'Edit Profile',
+  //       onClicked: () {
+  //         Navigator.push(
+  //           context,
+  //           MaterialPageRoute(builder: (context) => EditProfileScreen()),
+  //         ).then((_) {
+  //           // Refresh after returning from edit screen
+  //           setState(() {});
+  //         });
+  //       },
+  //     );
+
   Widget buildSocialMediaLinks() => Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

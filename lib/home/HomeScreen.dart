@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sri_traveler/home/HomeScreen/PlaceCard.dart';
 import 'package:sri_traveler/home/TripScreen/trip_references.dart';
 import 'package:sri_traveler/home/profile/user_references.dart';
 import 'package:sri_traveler/home/TripScreen/trip.dart';
@@ -137,9 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
         itemCount: trips.length,
         itemBuilder: (context, index) {
           return PlaceCard(
-            name: trips[index].tripName,
-            location: trips[index].tripPlace,
-            image: trips[index].tripImagePath,
+            trip: trips[index],
           );
         },
       ),
@@ -198,57 +197,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         );
       }).toList(),
-    );
-  }
-}
-
-class PlaceCard extends StatelessWidget {
-  final String name;
-  final String location;
-  final String image;
-
-  const PlaceCard({
-    super.key,
-    required this.name,
-    required this.location,
-    required this.image,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 200,
-      margin: const EdgeInsets.only(right: 12),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        image: DecorationImage(image: AssetImage(image), fit: BoxFit.cover),
-      ),
-      child: Container(
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          gradient: LinearGradient(
-            begin: Alignment.bottomCenter,
-            end: Alignment.topCenter,
-            colors: [Colors.black.withOpacity(0.6), Colors.transparent],
-          ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Icon(Icons.location_on_sharp,
-                size: 20, color: Colors.white60),
-            Text(name,
-                style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold)),
-            Text(location,
-                style: const TextStyle(color: Colors.white70, fontSize: 14)),
-          ],
-        ),
-      ),
     );
   }
 }
