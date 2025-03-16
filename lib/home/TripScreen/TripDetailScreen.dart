@@ -38,7 +38,7 @@ class _TripDetailScreenState extends State<TripDetailScreen> {
                 ClipRRect(
                   borderRadius:
                       BorderRadius.vertical(top: Radius.circular(12.0)),
-                  child: Image.asset(widget.trip.tripImagePath,
+                  child: Image.network(widget.trip.tripImagePath,
                       width: double.infinity, fit: BoxFit.cover),
                 ),
                 Padding(

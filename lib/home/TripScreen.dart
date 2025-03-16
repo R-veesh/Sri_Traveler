@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sri_traveler/home/TripScreen/trip.dart';
 import 'package:sri_traveler/home/TripScreen/trip_references.dart';
 import 'package:sri_traveler/home/TripScreen/TripDetailScreen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class TripScreen extends StatelessWidget {
   const TripScreen({super.key});
@@ -16,16 +17,29 @@ class TripScreen extends StatelessWidget {
             Text('Trip', style: TextStyle(color: Colors.black, fontSize: 20)),
         backgroundColor: const Color.fromARGB(129, 180, 230, 255),
       ),
-      body: trips.isNotEmpty
-          ? ListView.builder(
-              itemCount: trips.length,
-              itemBuilder: (BuildContext context, int index) {
-                return getItem(context, index, trips[index]);
-              },
-            )
-          : Center(
-              child: Text('No trips available'),
-            ),
+      //database get
+      body: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance.collection('trips').snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return Center(child: Text('No trips available'));
+          }
+
+          List<Trip> trips = snapshot.data!.docs
+              .map((doc) => Trip.fromFirestore(doc))
+              .toList();
+
+          return ListView.builder(
+            itemCount: trips.length,
+            itemBuilder: (context, index) {
+              return getItem(context, index, trips[index]);
+            },
+          );
+        },
+      ),
     );
   }
 
@@ -59,11 +73,16 @@ class TripScreen extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(10, 0, 9, 0),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10.0),
-                      child: Image.asset(
+                      child: Image.network(
                         trip.tripImagePath,
                         fit: BoxFit.cover,
                         width: 130,
                         height: 130,
+                        errorBuilder: (context, error, stackTrace) {
+                          print("Image Load Error: $error");
+                          return Icon(Icons.broken_image,
+                              size: 100, color: Colors.red);
+                        },
                       ),
                     ),
                   ),
@@ -78,7 +97,7 @@ class TripScreen extends StatelessWidget {
                         height: 4,
                       ),
                       Text(
-                        trip.tripName,
+                        trip.tripName.trim(),
                         style: TextStyle(
                             fontSize: 20,
                             fontFamily: 'arial',
