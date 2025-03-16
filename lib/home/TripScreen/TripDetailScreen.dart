@@ -11,9 +11,9 @@ class TripDetailScreen extends StatefulWidget {
 }
 
 class _TripDetailScreenState extends State<TripDetailScreen> {
-  double rating = 4.5; // Default rating
+  double rating = 4.5;
   final TextEditingController _commentController = TextEditingController();
-  List<String> comments = []; // Store user comments
+  List<String> comments = [];
 
   @override
   Widget build(

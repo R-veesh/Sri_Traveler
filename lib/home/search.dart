@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:sri_traveler/home/TripScreen/trip_references.dart';
 import 'package:sri_traveler/home/TripScreen/TripDetailScreen.dart';
@@ -11,8 +12,34 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  List<Trip> filteredTrips = TripReferences.myTrips;
+  // List<Trip> filteredTrips = TripReferences.myTrips;
+  List<Trip> filteredTrips = [];
+  List<Trip> allTrips = [];
   TextEditingController searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    fetchTrips();
+  }
+
+  // Fetch trips from Firestore
+  Future<void> fetchTrips() async {
+    try {
+      // Get all trips from Firestore
+      QuerySnapshot snapshot =
+          await FirebaseFirestore.instance.collection('trips').get();
+      // Convert each document to a Trip object
+      setState(() {
+        allTrips = snapshot.docs.map((doc) {
+          return Trip.fromFirestore(doc);
+        }).toList();
+        filteredTrips = List.from(allTrips);
+      });
+    } catch (e) {
+      print("Error fetching trips: $e");
+    }
+  }
 
   void filterSearchResults(String query) {
     setState(() {
@@ -75,7 +102,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       itemBuilder: (context, index) {
                         final trip = filteredTrips[index];
                         return ListTile(
-                          leading: Image.asset(trip.tripImagePath,
+                          leading: Image.network(trip.tripImagePath,
                               width: 50, height: 50, fit: BoxFit.cover),
                           title: Text(trip.tripName),
                           subtitle: Text(trip.tripPlace),

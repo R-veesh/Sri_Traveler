@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sri_traveler/home/TripScreen/trip.dart';
-import 'package:sri_traveler/home/TripScreen/trip_references.dart';
+// import 'package:sri_traveler/home/TripScreen/trip_references.dart';
 import 'package:sri_traveler/home/TripScreen/TripDetailScreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -9,7 +9,7 @@ class TripScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final trips = TripReferences.myTrips;
+    //final trips = TripReferences.myTrips;
 
     return Scaffold(
       appBar: AppBar(
