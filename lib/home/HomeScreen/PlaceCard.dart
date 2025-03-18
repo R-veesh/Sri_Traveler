@@ -27,7 +27,7 @@ class PlaceCard extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           image: DecorationImage(
-            image: AssetImage(trip.tripImagePath),
+            image: NetworkImage(trip.tripImagePath),
             fit: BoxFit.cover,
           ),
         ),

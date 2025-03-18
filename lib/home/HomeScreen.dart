@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:sri_traveler/home/HomeScreen/PlaceCard.dart';
 import 'package:sri_traveler/home/TripScreen/trip_references.dart';
@@ -12,6 +13,33 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  List<Trip> trips = [];
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchTrips();
+  }
+
+  Future<void> fetchTrips() async {
+    try {
+      QuerySnapshot snapshot =
+          await FirebaseFirestore.instance.collection('trips').get();
+      setState(
+        () {
+          trips = snapshot.docs.map((doc) => Trip.fromFirestore(doc)).toList();
+          isLoading = false;
+        },
+      );
+    } catch (e) {
+      print("Error fetching trips: $e");
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final int currentHour = DateTime.now().hour;
@@ -122,7 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildTrip() {
-    final trips = TripReferences.myTrips;
+    //final trips = TripReferences.myTrips;
     return DefaultTabController(
       length: 3,
       child: Column(
