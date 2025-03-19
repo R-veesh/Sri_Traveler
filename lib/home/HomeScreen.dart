@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:sri_traveler/home/HomeScreen/PlaceCard.dart';
-import 'package:sri_traveler/home/TripScreen/trip_references.dart';
 import 'package:sri_traveler/home/profile/user_references.dart';
 import 'package:sri_traveler/home/TripScreen/trip.dart';
 

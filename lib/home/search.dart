@@ -60,7 +60,7 @@ class _SearchScreenState extends State<SearchScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Search Trips'),
-        backgroundColor: Color.fromARGB(255, 254, 240, 159),
+        backgroundColor: const Color.fromARGB(129, 180, 230, 255),
         actions: [
           IconButton(
             icon: Icon(Icons.clear),
