@@ -26,14 +26,18 @@ class _HomeScreenState extends State<HomeScreen> {
     try {
       QuerySnapshot snapshot =
           await FirebaseFirestore.instance.collection('trips').get();
-      setState(
-        () {
-          trips = snapshot.docs.map((doc) => Trip.fromFirestore(doc)).toList();
-          isLoading = false;
-        },
-      );
+
+      if (!mounted) return;
+
+      setState(() {
+        trips = snapshot.docs.map((doc) => Trip.fromFirestore(doc)).toList();
+        isLoading = false;
+      });
     } catch (e) {
       print("Error fetching trips: $e");
+
+      if (!mounted) return;
+
       setState(() {
         isLoading = false;
       });
