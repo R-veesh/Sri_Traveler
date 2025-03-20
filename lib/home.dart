@@ -18,12 +18,12 @@ class homePage extends StatefulWidget {
 class _homePageState extends State<homePage> {
   int _isSelectedIndex = 2;
 
-  final List<Widget> widgetOptions = const [
-    TripScreen(),
-    SearchScreen(),
-    HomeScreen(),
+  final List<Widget> widgetOptions = [
+    const TripScreen(),
+    const SearchScreen(),
+    const HomeScreen(),
     ProfileScreen(),
-    DashboardScreen(),
+    const DashboardScreen(),
   ];
 
   void _onItemTapped(int index) {
