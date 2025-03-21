@@ -46,6 +46,7 @@ app.*.map.json
 
 # ignore
 firebase.json
+.env
 /android/app/google-services.json
 # git rm --cached firebase.json
 # git rm --cached android/app/google-services.json
