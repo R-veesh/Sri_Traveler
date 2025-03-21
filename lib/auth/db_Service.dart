@@ -25,7 +25,7 @@ class DatabaseService {
       'age': age,
       'createdAt': FieldValue.serverTimestamp(),
       'lastLogin': FieldValue.serverTimestamp(),
-      'profileImageUrl': '',
+      'imagePath': '',
       'bio': '',
       'isDarkMode': false,
     });
@@ -65,7 +65,7 @@ class DatabaseService {
     if (firstName != null || lastName != null) {
       data['fullName'] = '${firstName ?? ''} ${lastName ?? ''}'.trim();
     }
-    if (profileImageUrl != null) data['profileImageUrl'] = profileImageUrl;
+    if (profileImageUrl != null) data['imagePath'] = profileImageUrl;
     if (bio != null) data['bio'] = bio;
     if (isDarkMode != null) data['isDarkMode'] = isDarkMode;
 

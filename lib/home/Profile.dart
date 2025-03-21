@@ -88,6 +88,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       });
       // Fallback to default user if error
       user = UserReferences.myUser;
+      print('Profile image path: ${user.imagePath}');
     }
 
     setState(() {

@@ -58,7 +58,7 @@ class UserReferences {
         if (doc.exists && doc.data() != null) {
           final data = doc.data()!;
           return User(
-            imagePath: data['imagePath'] ?? '',
+            imagePath: data['imagePath'] ?? '', //test
             name: data['name'] ?? currentUser.displayName ?? 'Traveler',
             email: data['email'] ?? currentUser.email ?? '',
             bio: data['bio'] ?? 'Hello! I love traveling.',
@@ -73,19 +73,3 @@ class UserReferences {
     return myUser;
   }
 }
-
-// import 'package:sri_traveler/home/profile/user.dart';
-
-// class UserReferences {
-//   static User myUser = User(
-//     imagePath: 'assets/5-250x250.jpg',
-//     name: 'Raveesha',
-//     email: 'test@gmail.com',
-//     bio: 'I’m an astronaut and traveler!',
-//     isDarkMode: false,
-//   );
-
-//   static void updateUser(User updatedUser) {
-//     myUser = updatedUser;
-//   }
-// }

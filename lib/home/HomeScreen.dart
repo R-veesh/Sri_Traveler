@@ -94,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   CircleAvatar(
                     radius: 25,
-                    backgroundImage: AssetImage(user.imagePath),
+                    backgroundImage: NetworkImage(user.imagePath),
                   ),
                 ],
               ),

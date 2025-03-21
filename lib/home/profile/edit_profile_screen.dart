@@ -1,8 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:sri_traveler/auth/cloudinary_service.dart';
 import 'package:sri_traveler/home/profile/profile_widget.dart';
 import 'package:sri_traveler/home/profile/user_references.dart';
 import 'package:sri_traveler/home/profile/user.dart';
@@ -19,6 +20,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   late User user;
   bool isLoading = false;
 
+  // Create Cloudinary service
+  final cloudinaryService = CloudinaryService(
+    cloudName: 'dtgie8eha',
+    uploadPreset: 'traveler_app_preset',
+  );
   @override
   void initState() {
     super.initState();
@@ -37,8 +43,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   Future<void> _pickImage() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+    final pickedFile = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 70,
+    );
 
     if (pickedFile != null) {
       setState(() {
@@ -46,30 +54,28 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       });
 
       try {
-        // Upload image to Firebase Storage
-        final currentUser = firebase_auth.FirebaseAuth.instance.currentUser;
-        if (currentUser != null) {
-          final storageRef = FirebaseStorage.instance
-              .ref()
-              .child('profile_images')
-              .child('${currentUser.uid}.jpg');
+        // Create a File object from the picked file path
+        final file = File(pickedFile.path);
 
-          await storageRef.putFile(File(pickedFile.path));
-          final downloadUrl = await storageRef.getDownloadURL();
+        // Upload to Cloudinary using our service
+        final imageUrl = await cloudinaryService.uploadImage(file);
+        print('Cloudinary image URL: $imageUrl');
 
-          setState(() {
-            user = user.copyWith(imagePath: downloadUrl);
-            isLoading = false;
-          });
-        } else {
-          // Just use local path if not logged in
-          setState(() {
-            user = user.copyWith(imagePath: pickedFile.path);
-            isLoading = false;
-          });
-        }
+        setState(() {
+          user = user.copyWith(imagePath: imageUrl);
+          isLoading = false;
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Profile image uploaded successfully')),
+        );
       } catch (e) {
         print('Error uploading image: $e');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to upload image. Please try again.')),
+        );
+
+        // Fallback to local path if upload fails
         setState(() {
           user = user.copyWith(imagePath: pickedFile.path);
           isLoading = false;
@@ -206,7 +212,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 }
-
 // import 'package:flutter/material.dart';
 // import 'package:image_picker/image_picker.dart';
 // import 'package:sri_traveler/home/profile/profile_widget.dart';
