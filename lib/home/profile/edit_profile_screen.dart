@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:sri_traveler/auth/cloudinary_service.dart';
 import 'package:sri_traveler/home/profile/profile_widget.dart';
 import 'package:sri_traveler/home/profile/user_references.dart';
 import 'package:sri_traveler/home/profile/user.dart';
+import 'package:sri_traveler/services/user_service.dart'; // Import the new UserService
 
 class EditProfileScreen extends StatefulWidget {
   @override
@@ -12,29 +12,64 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
-  late TextEditingController nameController;
+  late TextEditingController firstNameController;
+  late TextEditingController lastNameController;
   late TextEditingController emailController;
   late TextEditingController bioController;
   late User user;
   bool isLoading = false;
 
-  // Create Cloudinary service
-  final cloudinaryService = CloudinaryService(
-    cloudName: 'dtgie8eha',
-    uploadPreset: 'traveler_app_preset',
+  // Create UserService
+  final userService = UserService(
+    cloudinaryName: 'dtgie8eha',
+    cloudinaryUploadPreset: 'traveler_app_preset',
   );
+
   @override
   void initState() {
     super.initState();
-    user = UserReferences.myUser;
-    nameController = TextEditingController(text: user.name);
-    emailController = TextEditingController(text: user.email);
-    bioController = TextEditingController(text: user.bio);
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      user = await UserReferences.fetchCurrentUser();
+
+      // Initialize controllers with user data
+      firstNameController = TextEditingController(text: user.firstName);
+      lastNameController = TextEditingController(text: user.lastName);
+      emailController = TextEditingController(text: user.email);
+      bioController = TextEditingController(text: user.bio);
+    } catch (e) {
+      print('Error loading user data: $e');
+      // Use default user if there's an error
+      user = UserReferences.defaultUser;
+
+      firstNameController = TextEditingController(text: user.firstName);
+      lastNameController = TextEditingController(text: user.lastName);
+      emailController = TextEditingController(text: user.email);
+      bioController = TextEditingController(text: user.bio);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content:
+                Text('Failed to load profile data. Using default values.')),
+      );
+    }
+
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
   void dispose() {
-    nameController.dispose();
+    firstNameController.dispose();
+    lastNameController.dispose();
     emailController.dispose();
     bioController.dispose();
     super.dispose();
@@ -56,13 +91,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         final file = File(pickedFile.path);
 
         // Upload to Cloudinary using our service
-        final imageUrl = await cloudinaryService.uploadImage(file);
-        print('Cloudinary image URL: $imageUrl');
+        await userService.uploadProfileImage(file);
 
-        setState(() {
-          user = user.copyWith(imagePath: imageUrl);
-          isLoading = false;
-        });
+        // Refresh user data
+        user = await UserReferences.fetchCurrentUser();
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Profile image uploaded successfully')),
@@ -72,10 +104,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Failed to upload image. Please try again.')),
         );
-
-        // Fallback to local path if upload fails
+      } finally {
         setState(() {
-          user = user.copyWith(imagePath: pickedFile.path);
           isLoading = false;
         });
       }
@@ -83,13 +113,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   Future<void> _saveProfile() async {
-    final newName = nameController.text.trim();
+    final newFirstName = firstNameController.text.trim();
+    final newLastName = lastNameController.text.trim();
     final newEmail = emailController.text.trim();
     final newBio = bioController.text.trim();
 
-    if (newName.isEmpty || newEmail.isEmpty) {
+    if (newFirstName.isEmpty || newLastName.isEmpty || newEmail.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Name and email cannot be empty')),
+        SnackBar(
+            content: Text('First name, last name, and email cannot be empty')),
       );
       return;
     }
@@ -99,15 +131,23 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     });
 
     try {
-      // Update user object
-      user = user.copyWith(
-        name: newName,
-        email: newEmail,
+      // Use the UserService to update the profile
+      await userService.updateUserProfile(
+        firstName: newFirstName,
+        lastName: newLastName,
         bio: newBio,
       );
 
-      // Save to Firebase
-      await UserReferences.updateUser(user);
+      // Update email separately if it changed
+      if (newEmail != user.email) {
+        // This would typically be handled by your auth service
+        // For now, we'll just show a message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Text(
+                  'Email updates require re-authentication and are not implemented in this demo')),
+        );
+      }
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Profile updated successfully')),
@@ -144,9 +184,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ),
                   SizedBox(height: 24),
                   buildTextField(
-                    label: 'Full Name',
-                    controller: nameController,
+                    label: 'First Name',
+                    controller: firstNameController,
                     icon: Icons.person,
+                  ),
+                  SizedBox(height: 16),
+                  buildTextField(
+                    label: 'Last Name',
+                    controller: lastNameController,
+                    icon: Icons.person_outline,
                   ),
                   SizedBox(height: 16),
                   buildTextField(
@@ -210,89 +256,3 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 }
-// import 'package:flutter/material.dart';
-// import 'package:image_picker/image_picker.dart';
-// import 'package:sri_traveler/home/profile/profile_widget.dart';
-// import 'package:sri_traveler/home/profile/user_references.dart';
-// import 'package:sri_traveler/home/profile/user.dart';
-
-// class EditProfileScreen extends StatefulWidget {
-//   @override
-//   _EditProfileScreenState createState() => _EditProfileScreenState();
-// }
-
-// class _EditProfileScreenState extends State<EditProfileScreen> {
-//   late TextEditingController nameController;
-//   late TextEditingController emailController;
-//   late TextEditingController bioController;
-//   late User user;
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     user = UserReferences.myUser;
-//     nameController = TextEditingController(text: user.name);
-//     emailController = TextEditingController(text: user.email);
-//     bioController = TextEditingController(text: user.bio);
-//   }
-
-//   Future<void> _pickImage() async {
-//     final pickedFile =
-//         await ImagePicker().pickImage(source: ImageSource.gallery);
-
-//     if (pickedFile != null) {
-//       setState(() {
-//         user = user.copyWith(imagePath: pickedFile.path);
-//       });
-//     }
-//   }
-
-//   void _saveProfile() {
-//     setState(() {
-//       user = user.copyWith(
-//         name: nameController.text,
-//         email: emailController.text,
-//         bio: bioController.text,
-//       );
-//       UserReferences.updateUser(user);
-//     });
-//     Navigator.pop(context); // Go back to Profile Screen
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(title: Text('Edit Profile')),
-//       body: Padding(
-//         padding: const EdgeInsets.all(16.0),
-//         child: Column(
-//           children: [
-//             ProfileWidget(
-//               imagePath: user.imagePath,
-//               onClicked_1: _pickImage,
-//             ),
-//             SizedBox(height: 20),
-//             TextField(
-//               controller: nameController,
-//               decoration: InputDecoration(labelText: 'Name'),
-//             ),
-//             TextField(
-//               controller: emailController,
-//               decoration: InputDecoration(labelText: 'Email'),
-//             ),
-//             TextField(
-//               controller: bioController,
-//               decoration: InputDecoration(labelText: 'Bio'),
-//               maxLines: 3,
-//             ),
-//             SizedBox(height: 20),
-//             ElevatedButton(
-//               onPressed: _saveProfile,
-//               child: Text('Save'),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }

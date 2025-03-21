@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'profile/profile_widget.dart';
 import 'profile/button_widget.dart';
 import 'profile/edit_profile_screen.dart';
-import 'profile/user.dart' as app_user;
+import 'profile/user.dart';
 import 'profile/user_references.dart';
 import 'profile/appBar_widget.dart';
+// Import the new UserService
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -16,9 +16,9 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  late app_user.User user;
+  late User user;
   bool isLoading = true;
-  String errorMessage = 'network error';
+  String errorMessage = '';
 
   @override
   void initState() {
@@ -33,62 +33,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
 
     try {
-      final currentUser = firebase_auth.FirebaseAuth.instance.currentUser;
-
-      if (currentUser != null) {
-        // Try to get user data from Firestore
-        final doc = await FirebaseFirestore.instance
-            .collection('users')
-            .doc(currentUser.uid)
-            .get();
-
-        if (doc.exists && doc.data() != null) {
-          // User exists in Firestore
-          final data = doc.data()!;
-          user = app_user.User(
-            imagePath: data['profileImageUrl'] ?? 'assets/default_profile.jpg',
-            name: data['fullName'] ?? currentUser.displayName ?? 'Traveler',
-            email: data['email'] ?? currentUser.email ?? '',
-            bio: data['bio'] ?? 'Hello! I love traveling.',
-            isDarkMode: data['isDarkMode'] ?? false,
-          );
-        } else {
-          // Create new user in Firestore
-          user = app_user.User(
-            imagePath: 'assets/default_profile.jpg',
-            name: currentUser.displayName ?? 'Traveler',
-            email: currentUser.email ?? '',
-            bio: 'Hello! I love traveling.',
-            isDarkMode: false,
-          );
-
-          // Save to Firestore
-          await FirebaseFirestore.instance
-              .collection('users')
-              .doc(currentUser.uid)
-              .set({
-            'profileImageUrl': user.imagePath,
-            'fullName': user.name,
-            'email': user.email,
-            'bio': user.bio,
-            'isDarkMode': user.isDarkMode,
-          });
-        }
-
-        // Update local reference
-        UserReferences.myUser = user;
-      } else {
-        // User not logged in
-        throw Exception('User not logged in');
-      }
+      // Use the UserService to get the current user
+      user = await UserReferences.fetchCurrentUser();
     } catch (e) {
       print('Error loading user data: $e');
       setState(() {
         errorMessage = 'Failed to load profile. Please try again.';
       });
       // Fallback to default user if error
-      user = UserReferences.myUser;
-      print('Profile image path: ${user.imagePath}');
+      user = UserReferences.defaultUser;
     }
 
     setState(() {
@@ -176,10 +129,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget buildName(app_user.User user) => Column(
+  Widget buildName(User user) => Column(
         children: [
           Text(
-            user.name,
+            user.fullName, // Use the computed fullName property
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
           ),
           const SizedBox(height: 4),
@@ -190,7 +143,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ],
       );
 
-  Widget buildAbout(app_user.User user) => Container(
+  Widget buildAbout(User user) => Container(
         padding: EdgeInsets.symmetric(horizontal: 48),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -272,6 +225,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       );
 }
+
+//v21.0.0
 
 // import 'package:flutter/material.dart';
 // import 'package:line_icons/line_icons.dart';

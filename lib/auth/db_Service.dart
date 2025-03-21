@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:sri_traveler/home/profile/user.dart'; // Update with your actual path
 
 class DatabaseService {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  //final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   // Collection reference
   final CollectionReference userCollection =
@@ -10,25 +11,14 @@ class DatabaseService {
   // Create user data
   Future<void> createUserData({
     required String uid,
-    required String firstName,
-    required String lastName,
-    required String email,
-    required DateTime dateOfBirth,
-    required int age,
+    required User user,
   }) async {
-    return await userCollection.doc(uid).set({
-      'firstName': firstName,
-      'lastName': lastName,
-      'fullName': '$firstName $lastName',
-      'email': email,
-      'dateOfBirth': dateOfBirth,
-      'age': age,
-      'createdAt': FieldValue.serverTimestamp(),
-      'lastLogin': FieldValue.serverTimestamp(),
-      'imagePath': '',
-      'bio': '',
-      'isDarkMode': false,
-    });
+    Map<String, dynamic> userData = user.toFirestore();
+    // Add timestamps
+    userData['createdAt'] = FieldValue.serverTimestamp();
+    userData['lastLogin'] = FieldValue.serverTimestamp();
+
+    return await userCollection.doc(uid).set(userData);
   }
 
   // Update user login timestamp
@@ -39,8 +29,12 @@ class DatabaseService {
   }
 
   // Get user data
-  Future<DocumentSnapshot> getUserData(String uid) async {
-    return await userCollection.doc(uid).get();
+  Future<User?> getUserData(String uid) async {
+    DocumentSnapshot doc = await userCollection.doc(uid).get();
+    if (doc.exists && doc.data() != null) {
+      return User.fromFirestore(doc.data() as Map<String, dynamic>);
+    }
+    return null;
   }
 
   // Check if user exists
@@ -52,45 +46,8 @@ class DatabaseService {
   // Update user profile
   Future<void> updateUserProfile({
     required String uid,
-    String? firstName,
-    String? lastName,
-    String? profileImageUrl,
-    String? bio,
-    bool? isDarkMode,
+    required User user,
   }) async {
-    Map<String, dynamic> data = {};
-
-    if (firstName != null) data['firstName'] = firstName;
-    if (lastName != null) data['lastName'] = lastName;
-    if (firstName != null || lastName != null) {
-      data['fullName'] = '${firstName ?? ''} ${lastName ?? ''}'.trim();
-    }
-    if (profileImageUrl != null) data['imagePath'] = profileImageUrl;
-    if (bio != null) data['bio'] = bio;
-    if (isDarkMode != null) data['isDarkMode'] = isDarkMode;
-
-    if (data.isNotEmpty) {
-      return await userCollection.doc(uid).update(data);
-    }
+    return await userCollection.doc(uid).update(user.toFirestore());
   }
 }
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-
-// class DbService {
-//   User? user = FirebaseAuth.instance.currentUser;
-
-//   // USER DATA
-//   Future saveUserData({required String name, required String email}) async {
-//     try {
-//       Map<String, dynamic> data = {
-//         "name": name,
-//         "email": email,
-//       };
-//       await FirebaseFirestore.instance
-//           .collection("users")
-//           .doc(user!.uid)
-//           .set(data);
-//     } catch (e) {}
-//   }
-// }

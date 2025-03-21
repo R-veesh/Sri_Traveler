@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:sri_traveler/home/HomeScreen/PlaceCard.dart';
+import 'package:sri_traveler/home/profile/user.dart';
 import 'package:sri_traveler/home/profile/user_references.dart';
 import 'package:sri_traveler/home/TripScreen/trip.dart';
 
@@ -14,11 +15,35 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   List<Trip> trips = [];
   bool isLoading = true;
+  late User user;
 
-  @override
   void initState() {
     super.initState();
-    fetchTrips();
+    // Initialize with default user
+    user = UserReferences.defaultUser;
+    // Load user data and trips
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    await _loadUserData();
+    await fetchTrips();
+  }
+
+  Future<void> _loadUserData() async {
+    try {
+      // Get current user from UserReferences
+      final currentUser = await UserReferences.fetchCurrentUser();
+
+      if (!mounted) return;
+
+      setState(() {
+        user = currentUser;
+      });
+    } catch (e) {
+      print("Error loading user data: $e");
+      // Keep using the default user if there's an error
+    }
   }
 
   Future<void> fetchTrips() async {
@@ -46,7 +71,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final int currentHour = DateTime.now().hour;
-    final user = UserReferences.myUser;
     //screen size
     double screenHeight = MediaQuery.of(context).size.height;
     double containerHeight = screenHeight - 40 - 150 - 170;
@@ -76,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Hi, ${user.name}',
+                        'Hi, ${user.firstName}',
                         style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -94,7 +118,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   CircleAvatar(
                     radius: 25,
-                    backgroundImage: NetworkImage(user.imagePath),
+                    backgroundImage: _getProfileImage(user.imagePath),
                   ),
                 ],
               ),
@@ -134,6 +158,16 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  ImageProvider _getProfileImage(String imagePath) {
+    if (imagePath.startsWith('http')) {
+      return NetworkImage(imagePath);
+    } else if (imagePath.startsWith('assets')) {
+      return AssetImage(imagePath);
+    } else {
+      return AssetImage('');
+    }
+  }
+
   Widget _buildTripSelection() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 6.0),
@@ -153,14 +187,13 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildTrip() {
-    //final trips = TripReferences.myTrips;
     return DefaultTabController(
       length: 3,
       child: Column(
         children: [
           const TabBar(
             labelColor: Color.fromARGB(255, 89, 21, 21),
-            indicatorColor: Color.fromARGB(255, 0, 0, 0),
+            indicatorColor: Color.fromARGB(0, 255, 255, 255),
             tabs: [
               Tab(text: 'Popular'),
               Tab(text: 'Recommended'),

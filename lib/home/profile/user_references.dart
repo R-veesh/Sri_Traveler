@@ -1,75 +1,65 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:sri_traveler/home/profile/user.dart';
+import 'package:sri_traveler/home/profile/user.dart'; // Update with your actual path
+import 'package:sri_traveler/auth/db_Service.dart'; // Update with your actual path
 
 class UserReferences {
-  static User myUser = User(
-    imagePath: 'assets/default_profile.png',
-    name: 'Default User',
+  static User defaultUser = User(
+    firstName: 'Default',
+    lastName: 'User',
     email: 'user@example.com',
+    imagePath: '',
     bio: 'Bio goes here',
     isDarkMode: false,
   );
 
+  static User currentUser = defaultUser;
+  static final DatabaseService _databaseService = DatabaseService();
+
+  // Update user in both local state and Firestore
   static Future<void> updateUser(User user) async {
     // Update local reference
-    myUser = user;
+    currentUser = user;
 
     // Update in Firestore
-    final currentUser = firebase_auth.FirebaseAuth.instance.currentUser;
-    if (currentUser != null) {
+    final currentAuthUser = firebase_auth.FirebaseAuth.instance.currentUser;
+    if (currentAuthUser != null) {
       try {
-        await FirebaseFirestore.instance
-            .collection('users')
-            .doc(currentUser.uid)
-            .update({
-          'imagePath': user.imagePath,
-          'name': user.name,
-          'email': user.email,
-          'bio': user.bio,
-          'isDarkMode': user.isDarkMode,
-        });
+        await _databaseService.updateUserProfile(
+          uid: currentAuthUser.uid,
+          user: user,
+        );
 
         // Update Firebase Auth display name if changed
-        if (currentUser.displayName != user.name) {
-          await currentUser.updateDisplayName(user.name);
+        if (currentAuthUser.displayName != user.fullName) {
+          await currentAuthUser.updateDisplayName(user.fullName);
         }
 
         // Update Firebase Auth email if changed
-        if (currentUser.email != user.email) {
-          await currentUser.updateEmail(user.email);
+        if (currentAuthUser.email != user.email) {
+          await currentAuthUser.updateEmail(user.email);
         }
       } catch (e) {
         print('Error updating user: $e');
+        throw e; // Re-throw to allow handling in UI
       }
     }
   }
 
   static Future<User> fetchCurrentUser() async {
-    final currentUser = firebase_auth.FirebaseAuth.instance.currentUser;
+    final currentAuthUser = firebase_auth.FirebaseAuth.instance.currentUser;
 
-    if (currentUser != null) {
+    if (currentAuthUser != null) {
       try {
-        final doc = await FirebaseFirestore.instance
-            .collection('users')
-            .doc(currentUser.uid)
-            .get();
-
-        if (doc.exists && doc.data() != null) {
-          final data = doc.data()!;
-          return User(
-            imagePath: data['imagePath'] ?? '',
-            name: data['name'] ?? currentUser.displayName ?? 'Traveler',
-            email: data['email'] ?? currentUser.email ?? '',
-            bio: data['bio'] ?? 'Hello! I love traveling.',
-            isDarkMode: data['isDarkMode'] ?? false,
-          );
+        final user = await _databaseService.getUserData(currentAuthUser.uid);
+        if (user != null) {
+          currentUser = user;
+          return user;
         }
       } catch (e) {
         print('Error fetching user: $e');
       }
     }
 
-    return myUser;
+    return currentUser;
   }
 }
