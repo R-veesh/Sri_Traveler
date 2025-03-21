@@ -58,7 +58,7 @@ class UserReferences {
         if (doc.exists && doc.data() != null) {
           final data = doc.data()!;
           return User(
-            imagePath: data['imagePath'] ?? '', //test
+            imagePath: data['imagePath'] ?? '',
             name: data['name'] ?? currentUser.displayName ?? 'Traveler',
             email: data['email'] ?? currentUser.email ?? '',
             bio: data['bio'] ?? 'Hello! I love traveling.',

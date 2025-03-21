@@ -1,8 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:cloudinary_public/cloudinary_public.dart';
-import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:sri_traveler/auth/cloudinary_service.dart';
 import 'package:sri_traveler/home/profile/profile_widget.dart';
 import 'package:sri_traveler/home/profile/user_references.dart';
