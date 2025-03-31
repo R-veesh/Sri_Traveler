@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sri_traveler/home/profile/profile_widget.dart';
 import 'package:sri_traveler/home/profile/user_references.dart';
@@ -22,8 +21,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   // Create UserService
   final userService = UserService(
-    cloudinaryName: dotenv.env['CLOUDINARY_NAME'] ?? '',
-    cloudinaryUploadPreset: dotenv.env['CLOUDINARY_UPLOAD_PRESET'] ?? '',
+    cloudinaryName: 'dtgie8eha',
+    // dotenv.env['dtgie8eha'] ?? '',
+    cloudinaryUploadPreset: 'traveler_app_preset',
+    // dotenv.env['traveler_app_preset'] ?? '',
   );
 
   @override
