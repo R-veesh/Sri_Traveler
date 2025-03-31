@@ -47,9 +47,9 @@ class _SignupScreenState extends State<SignupScreen> {
       builder: (context, child) {
         return Theme(
           data: ThemeData.light().copyWith(
-            primaryColor: const Color.fromARGB(255, 230, 227, 68),
+            primaryColor: const Color.fromARGB(255, 35, 85, 110),
             colorScheme: ColorScheme.light(
-              primary: const Color.fromARGB(255, 230, 227, 68),
+              primary: const Color.fromARGB(255, 35, 85, 110),
             ),
             buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
           ),
@@ -165,7 +165,7 @@ class _SignupScreenState extends State<SignupScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Sign Up'),
-        backgroundColor: const Color.fromARGB(255, 230, 227, 68),
+        backgroundColor: const Color.fromARGB(129, 180, 230, 255),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
@@ -385,7 +385,7 @@ class _SignupScreenState extends State<SignupScreen> {
               ElevatedButton(
                 onPressed: _isLoading ? null : _signUp,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(255, 230, 227, 68),
+                  backgroundColor: const Color.fromARGB(255, 35, 85, 110),
                   foregroundColor: Colors.black,
                   padding: EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
@@ -424,7 +424,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     child: Text(
                       'Login',
                       style: TextStyle(
-                        color: const Color.fromARGB(255, 230, 227, 68),
+                        color: const Color.fromARGB(255, 35, 85, 110),
                         fontWeight: FontWeight.bold,
                       ),
                     ),

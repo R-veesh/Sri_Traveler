@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sri_traveler/home/TripScreen/trip.dart';
-// import 'package:sri_traveler/home/TripScreen/trip_references.dart';
 import 'package:sri_traveler/home/TripScreen/TripDetailScreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -57,7 +56,7 @@ class TripScreen extends StatelessWidget {
         },
         child: Card(
           shadowColor: Colors.black,
-          color: const Color.fromARGB(129, 251, 254, 255),
+          color: const Color.fromARGB(255, 248, 250, 252),
           elevation: 3,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15.0),
@@ -131,7 +130,7 @@ class TripScreen extends StatelessWidget {
                       //   ),
                       // ),
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 0, 9, 10),
+                        padding: const EdgeInsets.fromLTRB(5, 0, 9, 10),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -140,7 +139,7 @@ class TripScreen extends StatelessWidget {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 12, vertical: 6),
                               decoration: BoxDecoration(
-                                color: Color.fromARGB(177, 255, 255, 255),
+                                color: Color.fromARGB(193, 229, 237, 245),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Text(
@@ -158,7 +157,7 @@ class TripScreen extends StatelessWidget {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 12, vertical: 6),
                               decoration: BoxDecoration(
-                                color: Color.fromARGB(177, 255, 255, 255),
+                                color: Color.fromARGB(200, 175, 241, 155),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Text(

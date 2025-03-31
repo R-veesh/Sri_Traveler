@@ -110,7 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Login'),
-        backgroundColor: const Color.fromARGB(255, 230, 227, 68),
+        backgroundColor: const Color.fromARGB(129, 180, 230, 255),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
@@ -123,7 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Icon(
                 Icons.account_circle,
                 size: 80,
-                color: const Color.fromARGB(255, 230, 227, 68),
+                color: const Color.fromARGB(255, 35, 85, 110),
               ),
               SizedBox(height: 20),
               Text(
@@ -209,7 +209,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             _rememberMe = value ?? false;
                           });
                         },
-                        activeColor: const Color.fromARGB(255, 230, 227, 68),
+                        activeColor: const Color.fromARGB(255, 35, 85, 110),
                       ),
                       Text('Remember me'),
                     ],
@@ -219,7 +219,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Text(
                       'Forgot Password?',
                       style: TextStyle(
-                        color: const Color.fromARGB(255, 230, 227, 68),
+                        color: const Color.fromARGB(255, 35, 85, 110),
                       ),
                     ),
                   ),
@@ -258,7 +258,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ElevatedButton(
                 onPressed: _isLoading ? null : _signIn,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(255, 230, 227, 68),
+                  backgroundColor: const Color.fromARGB(255, 35, 85, 110),
                   foregroundColor: Colors.black,
                   padding: EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
@@ -297,7 +297,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Text(
                       'Sign Up',
                       style: TextStyle(
-                        color: const Color.fromARGB(255, 230, 227, 68),
+                        color: const Color.fromARGB(255, 35, 85, 110),
                         fontWeight: FontWeight.bold,
                       ),
                     ),
