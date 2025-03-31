@@ -157,7 +157,7 @@ class _DashboardScreen extends State<DashboardScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Settings'),
-        backgroundColor: const Color.fromARGB(255, 230, 227, 68),
+        backgroundColor: const Color.fromARGB(129, 180, 230, 255),
       ),
       body: isLoading
           ? Center(child: CircularProgressIndicator())

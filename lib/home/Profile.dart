@@ -101,28 +101,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       const SizedBox(height: 24),
                       buildAbout(user),
                       const SizedBox(height: 24),
-                      Center(
-                        child: ButtonWidget(
-                          text: 'Edit Profile',
-                          onClicked: () {
-                            Navigator.of(context)
-                                .push(
-                              MaterialPageRoute(
-                                builder: (context) => EditProfileScreen(),
-                              ),
-                            )
-                                .then((_) {
-                              // Refresh profile when returning from edit screen
-                              loadUserData();
-                            });
-                          },
-                        ),
-                      ),
-                      const SizedBox(height: 24),
                       buildTravelStats(),
                       const SizedBox(height: 48),
-                      buildLogoutButton(),
-                      const SizedBox(height: 24),
+                      Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            buildLogoutButton(),
+                            const SizedBox(width: 16),
+                            buildEditProfileButton(),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -222,6 +212,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
             foregroundColor: Colors.white,
             padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           ),
+        ),
+      );
+
+  Widget buildEditProfileButton() => Center(
+        child: ButtonWidget(
+          text: 'Edit Profile',
+          onClicked: () {
+            Navigator.of(context)
+                .push(
+              MaterialPageRoute(
+                builder: (context) => EditProfileScreen(),
+              ),
+            )
+                .then((_) {
+              // Refresh profile when returning from edit screen
+              loadUserData();
+            });
+          },
         ),
       );
 }

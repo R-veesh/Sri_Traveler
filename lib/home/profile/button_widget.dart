@@ -22,7 +22,8 @@ class ButtonWidget extends StatelessWidget {
         onPressed: onClicked,
         child: Text(
           text,
-          style: TextStyle(fontSize: 24, color: Colors.white),
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 14, color: Colors.white),
         ),
       );
 }

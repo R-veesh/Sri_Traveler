@@ -22,24 +22,24 @@ class MyApp extends StatelessWidget {
       title: 'Sri Traveler',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: const Color.fromARGB(255, 230, 227, 68),
+        primaryColor: const Color.fromARGB(129, 180, 230, 255),
         colorScheme: ColorScheme.light(
-          primary: const Color.fromARGB(255, 230, 227, 68),
-          secondary: Colors.amber,
+          primary: const Color.fromARGB(129, 180, 230, 255),
+          secondary: const Color.fromARGB(94, 180, 230, 255),
         ),
         appBarTheme: AppBarTheme(
-          backgroundColor: const Color.fromARGB(255, 230, 227, 68),
+          backgroundColor: const Color.fromARGB(129, 180, 230, 255),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color.fromARGB(255, 230, 227, 68),
+            backgroundColor: const Color.fromARGB(129, 180, 230, 255),
             foregroundColor: Colors.black,
           ),
         ),
         inputDecorationTheme: InputDecorationTheme(
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(
-              color: const Color.fromARGB(255, 230, 227, 68),
+              color: const Color.fromARGB(129, 180, 230, 255),
             ),
           ),
         ),

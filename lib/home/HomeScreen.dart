@@ -16,6 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Trip> trips = [];
   bool isLoading = true;
   late User user;
+  String errorMessage = '';
 
   void initState() {
     super.initState();
@@ -74,7 +75,6 @@ class _HomeScreenState extends State<HomeScreen> {
     //screen size
     double screenHeight = MediaQuery.of(context).size.height;
     double containerHeight = screenHeight - 40 - 150 - 170;
-
     String greetingMessage;
     if (currentHour < 12) {
       greetingMessage = "Good Morning!";
@@ -85,76 +85,104 @@ class _HomeScreenState extends State<HomeScreen> {
     }
     return Scaffold(
       extendBody: true,
-      body: Container(
-        color: const Color.fromARGB(129, 180, 230, 255),
-        child: ListView(
-          shrinkWrap: true,
-          physics: AlwaysScrollableScrollPhysics(),
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(15, 20, 15, 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+      body: isLoading
+          ? Center(child: CircularProgressIndicator())
+          : errorMessage.isNotEmpty
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      Icon(Icons.error_outline, color: Colors.red, size: 48),
+                      SizedBox(height: 16),
                       Text(
-                        'Hi, ${user.firstName}',
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        errorMessage,
+                        style: TextStyle(color: Colors.red),
+                        textAlign: TextAlign.center,
                       ),
-                      Text(
-                        greetingMessage,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w300,
-                        ),
-                        textDirection: TextDirection.ltr,
+                      SizedBox(height: 16),
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            isLoading = true;
+                            errorMessage = '';
+                          });
+                          fetchTrips();
+                        },
+                        child: Text('Retry'),
                       ),
                     ],
                   ),
-                  CircleAvatar(
-                    radius: 25,
-                    backgroundImage: _getProfileImage(user.imagePath),
+                )
+              : Container(
+                  color: const Color.fromARGB(129, 180, 230, 255),
+                  child: ListView(
+                    shrinkWrap: true,
+                    physics: AlwaysScrollableScrollPhysics(),
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(15, 20, 15, 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Hi, ${user.firstName}',
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  greetingMessage,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w300,
+                                  ),
+                                  textDirection: TextDirection.ltr,
+                                ),
+                              ],
+                            ),
+                            CircleAvatar(
+                              radius: 25,
+                              backgroundImage: _getProfileImage(user.imagePath),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                        width: double.infinity,
+                        constraints: BoxConstraints(
+                          minHeight: containerHeight,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Color.fromRGBO(255, 255, 255, 1),
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            topRight: Radius.circular(20),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(15, 0, 15, 20),
+                          child: Column(
+                            children: [
+                              SizedBox(height: 15),
+                              _specialTitle(),
+                              const SizedBox(height: 10),
+                              _specialIcons(),
+                              const SizedBox(height: 15),
+                              _buildTripSelection(),
+                              _buildTrip(),
+                              const SizedBox(height: 30),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
                   ),
-                ],
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-              width: double.infinity,
-              constraints: BoxConstraints(
-                minHeight: containerHeight,
-              ),
-              decoration: BoxDecoration(
-                color: Color.fromRGBO(255, 255, 255, 1),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
                 ),
-              ),
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(15, 0, 15, 20),
-                child: Column(
-                  children: [
-                    SizedBox(height: 15),
-                    _specialTitle(),
-                    const SizedBox(height: 10),
-                    _specialIcons(),
-                    const SizedBox(height: 15),
-                    _buildTripSelection(),
-                    _buildTrip(),
-                    const SizedBox(height: 30),
-                  ],
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
     );
   }
 
