@@ -106,7 +106,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               width: 50, height: 50, fit: BoxFit.cover),
                           title: Text(trip.tripName),
                           subtitle: Text(trip.tripPlace),
-                          trailing: Text(trip.tripPrice),
+                          trailing: Text('${trip.tripPrice}LKR'),
                           onTap: () {
                             Navigator.push(
                               context,

@@ -108,26 +108,69 @@ class TripScreen extends StatelessWidget {
                         style: TextStyle(fontSize: 16, color: Colors.grey),
                       ),
                       const Spacer(),
+                      // Padding(
+                      //   padding: const EdgeInsets.fromLTRB(0, 0, 9, 10),
+                      //   child: Align(
+                      //     alignment: Alignment.bottomRight,
+                      //     child: Container(
+                      //       padding: const EdgeInsets.symmetric(
+                      //           horizontal: 12, vertical: 6),
+                      //       decoration: BoxDecoration(
+                      //         color: Color.fromARGB(177, 255, 255, 255),
+                      //         borderRadius: BorderRadius.circular(10),
+                      //       ),
+                      //       child: Text(
+                      //         '\$${trip.tripPrice}',
+                      //         style: const TextStyle(
+                      //           color: Color.fromARGB(255, 0, 0, 0),
+                      //           fontWeight: FontWeight.bold,
+                      //           fontSize: 16,
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(0, 0, 9, 10),
-                        child: Align(
-                          alignment: Alignment.bottomRight,
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 6),
-                            decoration: BoxDecoration(
-                              color: Color.fromARGB(177, 255, 255, 255),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Text(
-                              '\$${trip.tripPrice}',
-                              style: const TextStyle(
-                                color: Color.fromARGB(255, 0, 0, 0),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            // Trip Duration (Left Side)
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 6),
+                              decoration: BoxDecoration(
+                                color: Color.fromARGB(177, 255, 255, 255),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Text(
+                                '${trip.tripDuration} Days',
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
                               ),
                             ),
-                          ),
+
+                            // Trip Price (Right Side)
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 6),
+                              decoration: BoxDecoration(
+                                color: Color.fromARGB(177, 255, 255, 255),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Text(
+                                '${trip.tripPrice}LKR',
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],

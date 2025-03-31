@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:sri_traveler/auth/login_screen.dart';
 import 'package:sri_traveler/home.dart';
 import 'package:sri_traveler/home/profile/edit_profile_screen.dart';

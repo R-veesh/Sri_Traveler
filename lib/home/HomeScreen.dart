@@ -192,8 +192,8 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(
         children: [
           const TabBar(
-            labelColor: Color.fromARGB(255, 89, 21, 21),
-            indicatorColor: Color.fromARGB(0, 255, 255, 255),
+            labelColor: Color.fromARGB(255, 18, 57, 83),
+            indicatorColor: Color.fromARGB(206, 0, 0, 0),
             tabs: [
               Tab(text: 'Popular'),
               Tab(text: 'Recommended'),

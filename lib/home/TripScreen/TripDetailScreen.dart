@@ -80,7 +80,7 @@ class _TripDetailScreenState extends State<TripDetailScreen> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Text(
-                            '\$${widget.trip.tripPrice}',
+                            '${widget.trip.tripPrice}LKR',
                             style: const TextStyle(
                               color: Color.fromARGB(255, 0, 0, 0),
                               fontWeight: FontWeight.bold,
@@ -101,40 +101,75 @@ class _TripDetailScreenState extends State<TripDetailScreen> {
                         ],
                       ),
                       Divider(),
-                      SizedBox(height: 10),
-                      Text('Add a comment:', style: TextStyle(fontSize: 16)),
-                      TextField(
-                        controller: _commentController,
-                        decoration: InputDecoration(
-                          hintText: 'Write your thoughts...',
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          suffixIcon: IconButton(
-                            icon: Icon(Icons.send),
+                      const SizedBox(height: 15),
+                      //
+                      Center(
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
                             onPressed: () {
-                              setState(() {
-                                comments.add(_commentController.text);
-                                _commentController.clear();
-                              });
+                              // TODO: Implement booking logic here
+                              //
+                              //
+                              //
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                      'Booking for ${widget.trip.tripName} confirmed!'),
+                                ),
+                              );
                             },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blueAccent,
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 12, horizontal: 20),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            child: const Text(
+                              'Book Now',
+                              style:
+                                  TextStyle(fontSize: 18, color: Colors.white),
+                            ),
                           ),
                         ),
                       ),
+
                       SizedBox(height: 10),
-                      if (comments.isNotEmpty)
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: comments
-                              .map((comment) => Padding(
-                                    padding:
-                                        const EdgeInsets.symmetric(vertical: 5),
-                                    child: Text(
-                                      '- $comment',
-                                      style: TextStyle(fontSize: 14),
-                                    ),
-                                  ))
-                              .toList(),
-                        ),
+                      // Text('Add a comment:', style: TextStyle(fontSize: 16)),
+                      // TextField(
+                      //   controller: _commentController,
+                      //   decoration: InputDecoration(
+                      //     hintText: 'Write your thoughts...',
+                      //     border: OutlineInputBorder(
+                      //         borderRadius: BorderRadius.circular(10)),
+                      //     suffixIcon: IconButton(
+                      //       icon: Icon(Icons.send),
+                      //       onPressed: () {
+                      //         setState(() {
+                      //           comments.add(_commentController.text);
+                      //           _commentController.clear();
+                      //         });
+                      //       },
+                      //     ),
+                      //   ),
+                      // ),
+                      // SizedBox(height: 10),
+                      // if (comments.isNotEmpty)
+                      //   Column(
+                      //     crossAxisAlignment: CrossAxisAlignment.start,
+                      //     children: comments
+                      //         .map((comment) => Padding(
+                      //               padding:
+                      //                   const EdgeInsets.symmetric(vertical: 5),
+                      //               child: Text(
+                      //                 '- $comment',
+                      //                 style: TextStyle(fontSize: 14),
+                      //               ),
+                      //             ))
+                      //         .toList(),
+                      //   ),
                     ],
                   ),
                 ),

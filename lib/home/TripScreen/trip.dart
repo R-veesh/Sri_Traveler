@@ -6,6 +6,7 @@ class Trip {
   final String tripCode;
   final String tripPlace;
   final String tripPrice;
+  final String tripDuration;
   final String tripDescription;
 
   Trip({
@@ -14,6 +15,7 @@ class Trip {
     required this.tripCode,
     required this.tripPrice,
     required this.tripPlace,
+    required this.tripDuration,
     required this.tripDescription,
   });
 
@@ -26,6 +28,7 @@ class Trip {
       tripCode: data['tripCode'] ?? '',
       tripPrice: data['tripPrice'] ?? '',
       tripPlace: data['tripPlace'] ?? '',
+      tripDuration: data['tripDuration'] ?? '',
       tripDescription: data['tripDescription'] ?? '',
     );
   }
