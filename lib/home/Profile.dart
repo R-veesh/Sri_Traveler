@@ -40,8 +40,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       setState(() {
         errorMessage = 'Failed to load profile. Please try again.';
       });
-      // Fallback to default user if error
-      user = UserReferences.defaultUser;
     }
 
     setState(() {

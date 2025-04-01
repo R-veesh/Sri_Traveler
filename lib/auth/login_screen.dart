@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:sri_traveler/auth/db_Service.dart';
 import 'signup_screen.dart';
 import 'auth_service.dart';
 
@@ -19,7 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _obscurePassword = true;
 
   final AuthService _authService = AuthService();
-  //final DatabaseService _dbService = DatabaseService();
+  final DatabaseService _dbService = DatabaseService();
 
   @override
   void dispose() {
@@ -33,49 +35,79 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
+    // Start loading and reset any previous error messages
     setState(() {
       _isLoading = true;
       _errorMessage = '';
     });
 
     try {
-      // Sign in with email and password
+      // Sign in with email and password using the authentication service
       final UserCredential userCredential =
           await _authService.signInWithEmailAndPassword(
         _emailController.text.trim(),
         _passwordController.text.trim(),
       );
 
-      if (userCredential.user != null) {
-        // bool exists = await _dbService.userExists(userCredential.user!.uid);
+      User? firebaseUser = userCredential.user;
 
-        // Navigate to home screen
+      if (firebaseUser != null) {
+        // Check if the user exists in Firestore
+        DocumentSnapshot userDoc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(firebaseUser.uid)
+            .get();
+
+        if (!userDoc.exists) {
+          setState(() {
+            _errorMessage =
+                'User record not found. Please contact support or register again.';
+          });
+          return;
+        }
+
+        // Update last login time
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(firebaseUser.uid)
+            .update({'lastLogin': FieldValue.serverTimestamp()});
+
+        // Navigate to the home screen after a successful login
         Navigator.pushReplacementNamed(context, '/home');
       }
     } on FirebaseAuthException catch (e) {
-      String message = 'An error occurred during login';
-
-      if (e.code == 'user-not-found') {
-        message = 'No user found with this email';
-      } else if (e.code == 'wrong-password') {
-        message = 'Incorrect password';
-      } else if (e.code == 'invalid-email') {
-        message = 'Invalid email format';
-      } else if (e.code == 'user-disabled') {
-        message = 'This account has been disabled';
-      }
+      String message = _handleFirebaseAuthException(
+          e); // Handling errors in a separate function
 
       setState(() {
         _errorMessage = message;
       });
     } catch (e) {
       setState(() {
-        _errorMessage = e.toString();
+        _errorMessage = 'Login failed: ${e.toString()}';
       });
     } finally {
       setState(() {
         _isLoading = false;
       });
+    }
+  }
+
+// Separate function for handling FirebaseAuthException errors
+  String _handleFirebaseAuthException(FirebaseAuthException e) {
+    switch (e.code) {
+      case 'user-not-found':
+        return 'No user found with this email';
+      case 'wrong-password':
+        return 'Incorrect password';
+      case 'invalid-email':
+        return 'Invalid email format';
+      case 'user-disabled':
+        return 'This account has been disabled';
+      case 'too-many-requests':
+        return 'Too many login attempts. Try again later.';
+      default:
+        return 'An error occurred during login';
     }
   }
 

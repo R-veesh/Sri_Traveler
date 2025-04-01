@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
-import 'package:sri_traveler/home/profile/user.dart'; // Update with your actual path
-import 'package:sri_traveler/auth/db_Service.dart'; // Update with your actual path
+import 'package:sri_traveler/home/profile/user.dart';
+import 'package:sri_traveler/auth/db_Service.dart';
 
 class UserReferences {
   static User defaultUser = User(
@@ -36,12 +36,14 @@ class UserReferences {
 
         // Update Firebase Auth email if changed
         if (currentAuthUser.email != user.email) {
-          await currentAuthUser.updateEmail(user.email);
+          await currentAuthUser.verifyBeforeUpdateEmail(user.email);
         }
       } catch (e) {
         print('Error updating user: $e');
-        throw e; // Re-throw to allow handling in UI
+        throw e;
       }
+    } else {
+      print("No authenticated user found while updating.");
     }
   }
 

@@ -47,8 +47,6 @@ class _DashboardScreen extends State<DashboardScreen> {
       appVersion = '${packageInfo.version} (${packageInfo.buildNumber})';
     } catch (e) {
       print('Error loading settings data: $e');
-      // Use default user if there's an error
-      user = UserReferences.defaultUser;
     }
 
     setState(() {

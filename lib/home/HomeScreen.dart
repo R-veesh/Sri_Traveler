@@ -32,12 +32,13 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _loadUserData() async {
+    setState(() {
+      isLoading = true;
+    });
+
     try {
-      // Get current user from UserReferences
       final currentUser = await UserReferences.fetchCurrentUser();
-
       if (!mounted) return;
-
       setState(() {
         user = currentUser;
       });

@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:sri_traveler/auth/db_Service.dart';
 
 class User {
   String? uid;
@@ -29,9 +31,9 @@ class User {
     this.createdAt,
     this.lastLogin,
   });
-
   // Create from Firestore document
-  factory User.fromFirestore(Map<String, dynamic> data) {
+  factory User.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> document) {
+    final data = document.data()!;
     return User(
       firstName: data['firstName'] ?? '',
       lastName: data['lastName'] ?? '',

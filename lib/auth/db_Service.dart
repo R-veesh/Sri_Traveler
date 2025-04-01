@@ -2,8 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sri_traveler/home/profile/user.dart'; // Update with your actual path
 
 class DatabaseService {
-  //final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
   // Collection reference
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection('users');
@@ -29,12 +28,18 @@ class DatabaseService {
   }
 
   // Get user data
-  Future<User?> getUserData(String uid) async {
-    DocumentSnapshot doc = await userCollection.doc(uid).get();
-    if (doc.exists && doc.data() != null) {
-      return User.fromFirestore(doc.data() as Map<String, dynamic>);
+
+  Future<User?> getUserData(String email) async {
+    try {
+      final snapshot =
+          await _db.collection('users').where('email', isEqualTo: email).get();
+      return snapshot.docs.isNotEmpty
+          ? User.fromSnapshot(snapshot.docs.first)
+          : null;
+    } catch (e) {
+      print('Error fetching user data from Firestore: $e');
+      return null;
     }
-    return null;
   }
 
   // Check if user exists

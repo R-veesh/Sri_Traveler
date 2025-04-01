@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
@@ -93,7 +94,7 @@ class _SignupScreenState extends State<SignupScreen> {
     // Calculate age
     final int age = _calculateAge(_selectedDate!);
 
-    // Check if user is at least 13 years old (or your app's minimum age)
+    // Check if user is at least 13 years old
     if (age < 13) {
       setState(() {
         _errorMessage = 'You must be at least 13 years old to register';
@@ -114,10 +115,35 @@ class _SignupScreenState extends State<SignupScreen> {
         _passwordController.text.trim(),
       );
 
-      if (userCredential.user != null) {
+      User? firebaseUser = userCredential.user;
+
+      if (firebaseUser != null) {
         // Update display name in Firebase Auth
-        await userCredential.user!.updateDisplayName(
+        await firebaseUser.updateDisplayName(
             "${_firstNameController.text.trim()} ${_lastNameController.text.trim()}");
+
+        // Prepare user data for Firestore
+        var user = {
+          'uid': firebaseUser.uid,
+          'firstName': _firstNameController.text.trim(),
+          'lastName': _lastNameController.text.trim(),
+          'fullName':
+              "${_firstNameController.text.trim()} ${_lastNameController.text.trim()}",
+          'imagePath': '',
+          'bio': '',
+          'isDarkMode': false,
+          'email': _emailController.text.trim(),
+          'dateOfBirth': _selectedDate?.toIso8601String(),
+          'age': age,
+          'createdAt': DateTime.now().toIso8601String(),
+          'lastLogin': DateTime.now().toIso8601String(),
+        };
+
+        // Save user data in Firestore
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(firebaseUser.uid)
+            .set(user);
 
         // Show success message
         ScaffoldMessenger.of(context).showSnackBar(
@@ -159,6 +185,89 @@ class _SignupScreenState extends State<SignupScreen> {
       });
     }
   }
+
+  // Future<void> _signUp() async {
+  //   if (!_formKey.currentState!.validate()) {
+
+  //     return;
+  //   }
+
+  //   if (_selectedDate == null) {
+  //     setState(() {
+  //       _errorMessage = 'Please select your date of birth';
+  //     });
+  //     return;
+  //   }
+
+  //   // Calculate age
+  //   final int age = _calculateAge(_selectedDate!);
+
+  //   // Check if user is at least 13 years old (or your app's minimum age)
+  //   if (age < 13) {
+  //     setState(() {
+  //       _errorMessage = 'You must be at least 13 years old to register';
+  //     });
+  //     return;
+  //   }
+
+  //   setState(() {
+  //     _isLoading = true;
+  //     _errorMessage = '';
+  //   });
+
+  //   try {
+  //     // Create user with email and password
+  //     final UserCredential userCredential =
+  //         await _authService.signUpWithEmailAndPassword(
+  //       _emailController.text.trim(),
+  //       _passwordController.text.trim(),
+  //     );
+
+  //     if (userCredential.user != null) {
+  //       // Update display name in Firebase Auth
+  //       await userCredential.user!.updateDisplayName(
+  //           "${_firstNameController.text.trim()} ${_lastNameController.text.trim()}");
+
+  //       // Show success message
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(
+  //           content: Text('Account created successfully!'),
+  //           backgroundColor: Colors.green,
+  //         ),
+  //       );
+
+  //       // Navigate to login screen
+  //       Navigator.pushReplacement(
+  //         context,
+  //         MaterialPageRoute(builder: (context) => LoginScreen()),
+  //       );
+  //     }
+  //   } on FirebaseAuthException catch (e) {
+  //     String message = 'An error occurred during registration';
+
+  //     if (e.code == 'weak-password') {
+  //       message = 'The password provided is too weak';
+  //     } else if (e.code == 'email-already-in-use') {
+  //       message = 'An account already exists for this email';
+  //     } else if (e.code == 'invalid-email') {
+  //       message = 'The email address is not valid';
+  //     } else if (e.code == 'operation-not-allowed') {
+  //       message = 'Email/password accounts are not enabled';
+  //     }
+
+  //     setState(() {
+  //       _errorMessage = message;
+  //     });
+  //   } catch (e) {
+  //     setState(() {
+  //       _errorMessage = e.toString();
+  //     });
+  //   } finally {
+  //     setState(() {
+  //       _isLoading = false;
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

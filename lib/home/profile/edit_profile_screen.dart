@@ -48,8 +48,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       bioController = TextEditingController(text: user.bio);
     } catch (e) {
       print('Error loading user data: $e');
-      // Use default user if there's an error
-      user = UserReferences.defaultUser;
 
       firstNameController = TextEditingController(text: user.firstName);
       lastNameController = TextEditingController(text: user.lastName);
