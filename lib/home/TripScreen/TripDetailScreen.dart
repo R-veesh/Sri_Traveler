@@ -15,7 +15,8 @@ class _TripDetailScreenState extends State<TripDetailScreen> {
   double rating = 4.5;
   final TextEditingController _commentController = TextEditingController();
   List<String> comments = [];
-  String guideImagePath = 'assets/default_image.png';
+  String guideImagePath =
+      'https://t3.ftcdn.net/jpg/05/17/79/88/360_F_517798849_WuXhHTpg2djTbfNf0FQAjzFEoluHpnct.jpg';
 
   @override
   void initState() {
@@ -197,8 +198,8 @@ class _TripDetailScreenState extends State<TripDetailScreen> {
       if (snapshot.exists) {
         Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
         setState(() {
-          guideImagePath =
-              data['profileImageUrl'] ?? 'assets/default_image.png';
+          guideImagePath = data['profileImageUrl'] ??
+              'https://t3.ftcdn.net/jpg/05/17/79/88/360_F_517798849_WuXhHTpg2djTbfNf0FQAjzFEoluHpnct.jpg';
         });
       }
     } catch (e) {
