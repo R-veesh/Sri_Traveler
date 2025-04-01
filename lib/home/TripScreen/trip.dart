@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Trip {
+  final String guideId;
   final String tripImagePath;
   final String tripName;
   final String tripCode;
@@ -10,6 +11,7 @@ class Trip {
   final String tripDescription;
 
   Trip({
+    required this.guideId,
     required this.tripImagePath,
     required this.tripName,
     required this.tripCode,
@@ -23,6 +25,7 @@ class Trip {
   factory Trip.fromFirestore(DocumentSnapshot doc) {
     Map data = doc.data() as Map<String, dynamic>;
     return Trip(
+      guideId: data['guideId'] ?? '',
       tripImagePath: data['tripImagePath'] ?? '',
       tripName: data['tripName'] ?? '',
       tripCode: data['tripCode'] ?? '',

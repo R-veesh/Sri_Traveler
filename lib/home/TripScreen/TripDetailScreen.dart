@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:sri_traveler/home/TripScreen/trip.dart';
 
@@ -14,11 +15,16 @@ class _TripDetailScreenState extends State<TripDetailScreen> {
   double rating = 4.5;
   final TextEditingController _commentController = TextEditingController();
   List<String> comments = [];
+  String guideImagePath = 'assets/default_image.png';
 
   @override
-  Widget build(
-    BuildContext context,
-  ) {
+  void initState() {
+    super.initState();
+    fetchGuideImage(widget.trip.guideId);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.trip.tripName),
@@ -49,8 +55,7 @@ class _TripDetailScreenState extends State<TripDetailScreen> {
                       Row(
                         children: [
                           CircleAvatar(
-                            backgroundImage: AssetImage(
-                                'assets/profile_placeholder.png'), // Replace with actual user image
+                            backgroundImage: NetworkImage(guideImagePath),
                           ),
                           SizedBox(width: 8),
                           Text(
@@ -179,5 +184,25 @@ class _TripDetailScreenState extends State<TripDetailScreen> {
         ),
       ),
     );
+  }
+
+  //find the using guideId to find firebase guides doc the guider image path
+  Future<void> fetchGuideImage(String guideId) async {
+    try {
+      DocumentSnapshot snapshot = await FirebaseFirestore.instance
+          .collection('guides')
+          .doc(guideId)
+          .get();
+
+      if (snapshot.exists) {
+        Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+        setState(() {
+          guideImagePath =
+              data['profileImageUrl'] ?? 'assets/default_image.png';
+        });
+      }
+    } catch (e) {
+      print("Error fetching guide image: $e");
+    }
   }
 }

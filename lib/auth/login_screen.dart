@@ -21,7 +21,6 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _obscurePassword = true;
 
   final AuthService _authService = AuthService();
-  final DatabaseService _dbService = DatabaseService();
 
   @override
   void dispose() {
