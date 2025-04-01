@@ -13,7 +13,7 @@ class TripDetailScreen extends StatefulWidget {
 
 class _TripDetailScreenState extends State<TripDetailScreen> {
   double rating = 4.5;
-  final TextEditingController _commentController = TextEditingController();
+  // final TextEditingController _commentController = TextEditingController();
   List<String> comments = [];
   String guideImagePath =
       'https://t3.ftcdn.net/jpg/05/17/79/88/360_F_517798849_WuXhHTpg2djTbfNf0FQAjzFEoluHpnct.jpg';

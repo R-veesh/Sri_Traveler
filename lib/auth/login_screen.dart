@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:sri_traveler/auth/db_Service.dart';
 import 'signup_screen.dart';
 import 'auth_service.dart';
 
