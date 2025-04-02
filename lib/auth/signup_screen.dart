@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
+import 'package:sri_traveler/models/user_model.dart';
 import 'login_screen.dart';
 import 'auth_service.dart';
 
@@ -79,6 +80,7 @@ class _SignupScreenState extends State<SignupScreen> {
     return age;
   }
 
+//sign up fuction (new)
   Future<void> _signUp() async {
     if (!_formKey.currentState!.validate()) {
       return;
@@ -94,7 +96,7 @@ class _SignupScreenState extends State<SignupScreen> {
     // Calculate age
     final int age = _calculateAge(_selectedDate!);
 
-    // Check if user is at least 13 years old
+    // Check if user is at least 13 years old (or your app's minimum age)
     if (age < 13) {
       setState(() {
         _errorMessage = 'You must be at least 13 years old to register';
@@ -115,35 +117,25 @@ class _SignupScreenState extends State<SignupScreen> {
         _passwordController.text.trim(),
       );
 
-      User? firebaseUser = userCredential.user;
+      if (userCredential.user != null) {
+        // Create a UserModel instance with the provided information
+        UserModel userModel = UserModel(
+          firstName: _firstNameController.text.trim(),
+          lastName: _lastNameController.text.trim(),
+          email: _emailController.text.trim(),
+          dateOfBirth: _selectedDate!,
+          age: age,
+          createdAt: DateTime.now(),
+          lastLogin: DateTime.now(),
+        );
 
-      if (firebaseUser != null) {
-        // Update display name in Firebase Auth
-        await firebaseUser.updateDisplayName(
-            "${_firstNameController.text.trim()} ${_lastNameController.text.trim()}");
+        // Optionally update the display name in Firebase Auth
+        await userCredential.user!.updateDisplayName(
+          "${userModel.firstName} ${userModel.lastName}",
+        );
 
-        // Prepare user data for Firestore
-        var user = {
-          'uid': firebaseUser.uid,
-          'firstName': _firstNameController.text.trim(),
-          'lastName': _lastNameController.text.trim(),
-          'fullName':
-              "${_firstNameController.text.trim()} ${_lastNameController.text.trim()}",
-          'imagePath': '',
-          'bio': '',
-          'isDarkMode': false,
-          'email': _emailController.text.trim(),
-          'dateOfBirth': _selectedDate?.toIso8601String(),
-          'age': age,
-          'createdAt': DateTime.now().toIso8601String(),
-          'lastLogin': DateTime.now().toIso8601String(),
-        };
-
-        // Save user data in Firestore
-        await FirebaseFirestore.instance
-            .collection('users')
-            .doc(firebaseUser.uid)
-            .set(user);
+        // Save user model to Firestore (or any backend)
+        await _saveUserToFirestore(userCredential.user!.uid, userModel);
 
         // Show success message
         ScaffoldMessenger.of(context).showSnackBar(
@@ -186,9 +178,28 @@ class _SignupScreenState extends State<SignupScreen> {
     }
   }
 
+  Future<void> _saveUserToFirestore(String uid, UserModel userModel) async {
+    try {
+      // Assuming you have Firestore set up and the 'users' collection
+      await FirebaseFirestore.instance.collection('users').doc(uid).set({
+        'firstName': userModel.firstName,
+        'lastName': userModel.lastName,
+        'email': userModel.email,
+        'imagePath': userModel.imagePath,
+        'bio': userModel.bio,
+        'isDarkMode': userModel.isDarkMode,
+        'dateOfBirth': userModel.dateOfBirth.toIso8601String(),
+        'age': userModel.age,
+        'createdAt': userModel.createdAt.toIso8601String(),
+        'lastLogin': userModel.lastLogin.toIso8601String(),
+      });
+    } catch (e) {
+      print("Error saving user to Firestore: $e");
+    }
+  }
+
   // Future<void> _signUp() async {
   //   if (!_formKey.currentState!.validate()) {
-
   //     return;
   //   }
 

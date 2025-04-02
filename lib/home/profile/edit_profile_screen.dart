@@ -2,8 +2,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sri_traveler/home/profile/profile_widget.dart';
-import 'package:sri_traveler/home/profile/user_references.dart';
-import 'package:sri_traveler/home/profile/user.dart';
+import 'package:sri_traveler/models/user_model.dart';
+import 'package:sri_traveler/services/db_service.dart';
 import 'package:sri_traveler/services/user_service.dart'; // Import the new UserService
 
 class EditProfileScreen extends StatefulWidget {
@@ -16,7 +16,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   late TextEditingController lastNameController;
   late TextEditingController emailController;
   late TextEditingController bioController;
-  late User user;
+  late UserModel user;
   bool isLoading = false;
 
   // Create UserService
@@ -39,7 +39,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     });
 
     try {
-      user = await UserReferences.fetchCurrentUser();
+      // Fetch user data from the UserService
+      final userData = await DbService().getUserData();
+      user = UserModel.fromJson(userData ?? {});
 
       // Initialize controllers with user data
       firstNameController = TextEditingController(text: user.firstName);
@@ -93,9 +95,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         // Upload to Cloudinary using our service
         await userService.uploadProfileImage(file);
 
-        // Refresh user data
-        user = await UserReferences.fetchCurrentUser();
-
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Profile image uploaded successfully')),
         );
@@ -112,16 +111,78 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     }
   }
 
+  // Future<void> _saveProfile() async {
+  //   final newFirstName = firstNameController.text.trim();
+  //   final newLastName = lastNameController.text.trim();
+  //   final newEmail = emailController.text.trim();
+  //   final newBio = bioController.text.trim();
+
+  //   if (newFirstName.isEmpty || newLastName.isEmpty || newEmail.isEmpty) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(
+  //           content: Text('First name, last name, and email cannot be empty')),
+  //     );
+  //     return;
+  //   }
+
+  //   setState(() {
+  //     isLoading = true;
+  //   });
+
+  //   try {
+  //     // Use the UserService to update the profile
+  //     await userService.updateUserProfile(
+  //       firstName: newFirstName,
+  //       lastName: newLastName,
+  //       bio: newBio,
+  //     );
+
+  //     // Update email separately if it changed
+  //     if (newEmail != user.email) {
+  //       // This would typically be handled by your auth service
+  //       // For now, we'll just show a message
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(
+  //             content: Text(
+  //                 'Email updates require re-authentication and are not implemented in this demo')),
+  //       );
+  //     }
+
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text('Profile updated successfully')),
+  //     );
+
+  //     Navigator.pop(context); // Go back to Profile Screen
+  //   } catch (e) {
+  //     print('Error saving profile: $e');
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text('Error updating profile: ${e.toString()}')),
+  //     );
+  //     setState(() {
+  //       isLoading = false;
+  //     });
+  //   }
+  // }
   Future<void> _saveProfile() async {
     final newFirstName = firstNameController.text.trim();
     final newLastName = lastNameController.text.trim();
     final newEmail = emailController.text.trim();
     final newBio = bioController.text.trim();
 
+    // Validate inputs
     if (newFirstName.isEmpty || newLastName.isEmpty || newEmail.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
             content: Text('First name, last name, and email cannot be empty')),
+      );
+      return;
+    }
+
+    // Validate email format (basic check)
+    if (!RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
+        .hasMatch(newEmail)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please enter a valid email address')),
       );
       return;
     }
@@ -136,17 +197,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         firstName: newFirstName,
         lastName: newLastName,
         bio: newBio,
+        isDarkMode: 'false',
       );
 
       // Update email separately if it changed
       if (newEmail != user.email) {
-        // This would typically be handled by your auth service
-        // For now, we'll just show a message
+        // For email updates, we need to reauthenticate the user before updating the email
+        // This is a simplified flow, consider adding a reauthentication process.
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-              content: Text(
-                  'Email updates require re-authentication and are not implemented in this demo')),
+            content: Text(
+                'Email updates require re-authentication and are not implemented in this demo'),
+          ),
         );
+        // Optionally, here you could implement re-authentication logic
       }
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -159,6 +223,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error updating profile: ${e.toString()}')),
       );
+    } finally {
       setState(() {
         isLoading = false;
       });
@@ -179,7 +244,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               child: Column(
                 children: [
                   ProfileWidget(
-                    imagePath: user.imagePath,
+                    imagePath: user.imagePath ?? 'default_image_path',
                     onClicked_1: _pickImage,
                   ),
                   SizedBox(height: 24),

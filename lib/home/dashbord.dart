@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
-import 'package:sri_traveler/home/profile/user.dart';
-import 'package:sri_traveler/home/profile/user_references.dart';
+import 'package:sri_traveler/models/user_model.dart';
+import 'package:sri_traveler/services/db_service.dart';
 import 'package:sri_traveler/services/user_service.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:share_plus/share_plus.dart';
@@ -15,11 +15,17 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreen extends State<DashboardScreen> {
-  late User user;
+  late UserModel user;
   bool isLoading = true;
   String appVersion = '';
   bool notificationsEnabled = true;
   bool locationEnabled = true;
+
+  // Define _dbService
+  // final _dbService = UserService(
+  //   cloudinaryName: 'dtgie8eha',
+  //   cloudinaryUploadPreset: 'traveler_app_preset',
+  // );
 
   // Create UserService
   final userService = UserService(
@@ -40,7 +46,6 @@ class _DashboardScreen extends State<DashboardScreen> {
 
     try {
       // Load user data
-      user = await UserReferences.fetchCurrentUser();
 
       // Get app version
       final packageInfo = await PackageInfo.fromPlatform();
@@ -54,18 +59,53 @@ class _DashboardScreen extends State<DashboardScreen> {
     });
   }
 
+  // Future<void> _toggleDarkMode(bool value) async {
+  //   setState(() {
+  //     isLoading = true;
+  //   });
+
+  //   try {
+  //     await userService.updateUserProfile(
+  //       firstName: user.firstName,
+  //       lastName: user.lastName,
+  //       bio: user.bio ?? '',
+  //       isDarkMode: value.toString(),
+  //     );
+
+  //     // Refresh user data
+  //     user = await DbService.getUserData();
+
+  //     // Show success message
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text('Theme preference updated')),
+  //     );
+  //   } catch (e) {
+  //     print('Error updating theme preference: $e');
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text('Failed to update theme preference')),
+  //     );
+  //   }
+
+  //   setState(() {
+  //     isLoading = false;
+  //   });
+  // }
   Future<void> _toggleDarkMode(bool value) async {
     setState(() {
       isLoading = true;
     });
 
     try {
+      // Update the user's profile with the new dark mode preference
       await userService.updateUserProfile(
-        isDarkMode: value,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        bio: user.bio ?? '',
+        isDarkMode: '', // Pass the boolean directly here
       );
 
       // Refresh user data
-      user = await UserReferences.fetchCurrentUser();
+      // user = UserModel.fromJson(await DbService.getUserData() as Map<String, dynamic>);
 
       // Show success message
       ScaffoldMessenger.of(context).showSnackBar(
@@ -191,7 +231,8 @@ class _DashboardScreen extends State<DashboardScreen> {
         children: [
           CircleAvatar(
             radius: 30,
-            backgroundImage: _getProfileImage(user.imagePath),
+            backgroundImage: _getProfileImage(
+                user.imagePath ?? 'assets/default_profile.jpg'),
           ),
           SizedBox(width: 16),
           Expanded(
@@ -264,9 +305,10 @@ class _DashboardScreen extends State<DashboardScreen> {
       title: 'Appearance',
       children: [
         SwitchListTile(
-          secondary: Icon(user.isDarkMode ? Icons.dark_mode : Icons.light_mode),
+          // secondary: Icon(user.isDarkMode ? Icons.dark_mode : Icons.light_mode),
           title: Text('Dark Mode'),
-          value: user.isDarkMode,
+          // value: user.isDarkMode,
+          value: user.isDarkMode == 'true',
           onChanged: _toggleDarkMode,
         ),
         ListTile(

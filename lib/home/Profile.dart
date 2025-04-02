@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:sri_traveler/models/user_model.dart';
+import 'package:sri_traveler/services/db_service.dart';
 import 'profile/profile_widget.dart';
 import 'profile/button_widget.dart';
 import 'profile/edit_profile_screen.dart';
-import 'profile/user.dart';
-import 'profile/user_references.dart';
 import 'profile/appBar_widget.dart';
-// Import the new UserService
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -16,9 +15,10 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  late User user;
+  late UserModel user;
   bool isLoading = true;
   String errorMessage = '';
+  final DbService _dbService = DbService();
 
   @override
   void initState() {
@@ -33,12 +33,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
 
     try {
-      // Use the UserService to get the current user
-      user = await UserReferences.fetchCurrentUser();
+      var userDoc = await _dbService.readUserData().first;
+      if (userDoc.exists) {
+        user = UserModel.fromJson(userDoc.data() as Map<String, dynamic>);
+      } else {
+        setState(() {
+          errorMessage = 'User profile not found.';
+        });
+      }
     } catch (e) {
       print('Error loading user data: $e');
       setState(() {
-        errorMessage = 'Failed to load profile. Please try again.';
+        errorMessage = 'Failed to load profile. Please try again. Error: $e';
       });
     }
 
@@ -80,7 +86,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     children: [
                       const SizedBox(height: 24),
                       ProfileWidget(
-                        imagePath: user.imagePath,
+                        imagePath: user.imagePath ?? '',
                         onClicked_1: () {
                           Navigator.of(context)
                               .push(
@@ -117,7 +123,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget buildName(User user) => Column(
+  Widget buildName(UserModel user) => Column(
         children: [
           Text(
             user.fullName, // Use the computed fullName property
@@ -131,7 +137,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ],
       );
 
-  Widget buildAbout(User user) => Container(
+  Widget buildAbout(UserModel user) => Container(
         padding: EdgeInsets.symmetric(horizontal: 48),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -142,7 +148,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             const SizedBox(height: 16),
             Text(
-              user.bio,
+              user.bio ?? 'No bio available',
+              //not shuvra
               style: TextStyle(fontSize: 16, height: 1.4),
             ),
           ],
