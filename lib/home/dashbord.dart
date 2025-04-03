@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:sri_traveler/models/user_model.dart';
 import 'package:sri_traveler/services/db_service.dart';
 import 'package:sri_traveler/services/user_service.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
