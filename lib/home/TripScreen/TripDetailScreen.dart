@@ -164,6 +164,8 @@ class _TripDetailScreenState extends State<TripDetailScreen> {
                               // Extract necessary data for the booking
                               String tripName = widget.trip.tripName;
                               String guideName = guideDetails.fullName;
+                              int duration =
+                                  int.parse(widget.trip.tripDuration);
                               double price =
                                   double.parse(widget.trip.tripPrice);
                               DateTime startDate = DateTime.now();
@@ -172,6 +174,7 @@ class _TripDetailScreenState extends State<TripDetailScreen> {
                                 tripName: tripName,
                                 guideName: guideName,
                                 guideImagePath: guideImagePath,
+                                duration: duration,
                                 price: price,
                                 startDate: startDate,
                               );
@@ -186,38 +189,6 @@ class _TripDetailScreenState extends State<TripDetailScreen> {
                                   ),
                                 ),
                               );
-
-                              // try {
-                              //   // Extract necessary data for the booking
-                              //   String guideId = widget.trip.guideId;
-                              //   String guideName = widget.guideDetails.fullName;
-                              //   String tripName = widget.trip.tripName;
-                              //   String tripDuration = widget.trip.tripDuration;
-                              //   String price = widget.trip.tripPrice;
-
-                              //   // Navigate to the booking confirmation screen
-                              //   Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //       builder: (context) => bookingConfirmation(
-                              //         tripName: tripName,
-                              //         guideName: guideName,
-                              //         guideImagePath: guideImagePath,
-                              //         price: price,
-                              //       ),
-                              //     ),
-                              //   );
-                              // } catch (e) {
-                              //   // Show an error message if something goes wrong
-                              //   ScaffoldMessenger.of(context).showSnackBar(
-                              //     SnackBar(
-                              //       content: Text(
-                              //         'Failed to navigate for booking. Please try again.',
-                              //       ),
-                              //     ),
-                              //   );
-                              //   print('Error during navigation: $e');
-                              // }
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.blueAccent,

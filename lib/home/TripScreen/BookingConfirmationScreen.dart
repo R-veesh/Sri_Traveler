@@ -20,7 +20,7 @@ class BookingConfirmationScreen extends StatelessWidget {
       await DbService().bookingTrip(
         booking.guideName,
         booking.startDate,
-        5, // Example trip duration, you can pass it dynamically
+        booking.duration,
       );
 
       // Display a confirmation message
@@ -82,14 +82,14 @@ class BookingConfirmationScreen extends StatelessWidget {
               const SizedBox(height: 8),
               // Assuming a fixed duration or dynamic calculation
               Text(
-                'End Date: ${formatDate(booking.startDate.add(Duration(days: 5)))}',
+                'End Date: ${formatDate(booking.startDate.add(Duration(days: booking.duration)))}',
                 style: const TextStyle(fontSize: 18),
               ),
               const SizedBox(height: 16),
 
               // Price
               Text(
-                'Price: \$${booking.price.toStringAsFixed(2)}',
+                'Price: ${booking.price.toStringAsFixed(2)} LKR',
                 style: const TextStyle(fontSize: 18),
               ),
               const SizedBox(height: 16),
