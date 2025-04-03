@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class DbService {
   User? user = FirebaseAuth.instance.currentUser;
+  final CollectionReference userCollection =
+      FirebaseFirestore.instance.collection('users');
   //late final CloudinaryService _cloudinaryService;
 
   // Initialize Cloudinary service
@@ -95,4 +97,17 @@ class DbService {
   //     throw Exception('Failed to update profile');
   //   }
   // }
+
+  // Update user login timestamp
+  Future<void> updateUserLogin(String uid) async {
+    return await userCollection.doc(uid).update({
+      'lastLogin': FieldValue.serverTimestamp(),
+    });
+  }
+
+  // Check if user exists
+  Future<bool> userExists(String uid) async {
+    DocumentSnapshot doc = await userCollection.doc(uid).get();
+    return doc.exists;
+  }
 }

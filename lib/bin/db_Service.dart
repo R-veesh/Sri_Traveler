@@ -1,7 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:sri_traveler/home/profile/user.dart';
-import 'package:sri_traveler/models/user_model.dart'; // Update with your actual path
 
 class DatabaseService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;

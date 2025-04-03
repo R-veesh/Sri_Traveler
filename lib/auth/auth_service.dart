@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'db_Service.dart';
+import 'package:sri_traveler/services/db_service.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final DatabaseService _dbService = DatabaseService();
+  final DbService _dbService = DbService();
 
   // Get current user
   User? get currentUser => _auth.currentUser;
@@ -20,6 +20,7 @@ class AuthService {
         password: password,
       );
 
+      // Update last login timestamp in database
       // Update last login timestamp in database
       if (result.user != null) {
         await _dbService.updateUserLogin(result.user!.uid);

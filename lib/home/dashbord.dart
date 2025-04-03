@@ -18,6 +18,8 @@ class _DashboardScreen extends State<DashboardScreen> {
   late UserModel user;
   bool isLoading = true;
   String appVersion = '';
+  String errorMessage = '';
+  final DbService _dbService = DbService();
   bool notificationsEnabled = true;
   bool locationEnabled = true;
 
@@ -36,22 +38,29 @@ class _DashboardScreen extends State<DashboardScreen> {
   @override
   void initState() {
     super.initState();
-    _loadData();
+    loadUserData();
   }
 
-  Future<void> _loadData() async {
+  Future<void> loadUserData() async {
     setState(() {
       isLoading = true;
+      errorMessage = '';
     });
 
     try {
-      // Load user data
-
-      // Get app version
-      final packageInfo = await PackageInfo.fromPlatform();
-      appVersion = '${packageInfo.version} (${packageInfo.buildNumber})';
+      var userDoc = await _dbService.readUserData().first;
+      if (userDoc.exists) {
+        user = UserModel.fromJson(userDoc.data() as Map<String, dynamic>);
+      } else {
+        setState(() {
+          errorMessage = 'User profile not found.';
+        });
+      }
     } catch (e) {
-      print('Error loading settings data: $e');
+      print('Error loading user data: $e');
+      setState(() {
+        errorMessage = 'Failed to load profile. Please try again. Error: $e';
+      });
     }
 
     setState(() {
@@ -259,7 +268,7 @@ class _DashboardScreen extends State<DashboardScreen> {
             icon: Icon(Icons.edit),
             onPressed: () {
               Navigator.pushNamed(context, '/edit-profile').then((_) {
-                _loadData(); // Refresh data when returning from edit screen
+                loadUserData(); // Refresh data when returning from edit screen
               });
             },
           ),
