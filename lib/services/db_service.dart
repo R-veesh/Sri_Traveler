@@ -2,9 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class DbService {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   User? user = FirebaseAuth.instance.currentUser;
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection('users');
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   //late final CloudinaryService _cloudinaryService;
 
   // Initialize Cloudinary service
@@ -109,5 +111,41 @@ class DbService {
   Future<bool> userExists(String uid) async {
     DocumentSnapshot doc = await userCollection.doc(uid).get();
     return doc.exists;
+  }
+
+  // Function to handle booking logic
+  Future<void> bookingTrip(
+      String guideId, DateTime startDay, int tripDuration) async {
+    try {
+      // Ensure the user is logged in
+      User? currentUser = _auth.currentUser;
+      if (currentUser == null) {
+        throw Exception("User is not logged in");
+      }
+
+      // Calculate the end date by adding the trip duration to the start day
+      DateTime endDay = startDay.add(Duration(days: tripDuration));
+
+      // Generate a booking ID (you can use Firestore's auto-generated ID or create your own)
+      String bookingId = _firestore.collection('bookings').doc().id;
+
+      // Prepare the booking data
+      Map<String, dynamic> bookingData = {
+        'userId': currentUser.uid,
+        'guideId': guideId,
+        'startDate': Timestamp.fromDate(startDay),
+        'endDate': Timestamp.fromDate(endDay),
+        'status': 'pending',
+        'tripDuration': tripDuration,
+      };
+
+      // Create the booking document in Firestore
+      await _firestore.collection('bookings').doc(bookingId).set(bookingData);
+
+      print("Booking created successfully with ID: $bookingId");
+    } catch (e) {
+      print("Error during booking: $e");
+      throw Exception("Failed to create booking");
+    }
   }
 }

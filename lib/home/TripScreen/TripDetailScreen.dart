@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:sri_traveler/home/TripScreen/BookingConfirmationScreen.dart';
 import 'package:sri_traveler/home/TripScreen/trip.dart';
+import 'package:sri_traveler/models/booking_modal.dart';
+import 'package:sri_traveler/models/guider_modal.dart';
 
 class TripDetailScreen extends StatefulWidget {
   final Trip trip;
@@ -12,6 +15,7 @@ class TripDetailScreen extends StatefulWidget {
 }
 
 class _TripDetailScreenState extends State<TripDetailScreen> {
+  late GuideModel guideDetails;
   double rating = 4.5;
   // final TextEditingController _commentController = TextEditingController();
   List<String> comments = [];
@@ -22,7 +26,50 @@ class _TripDetailScreenState extends State<TripDetailScreen> {
   void initState() {
     super.initState();
     fetchGuideImage(widget.trip.guideId);
+    fetchGuideDetails(widget.trip.guideId);
   }
+
+  //find the using guideId to find firebase guides doc the guider image path
+  Future<void> fetchGuideImage(String guideId) async {
+    try {
+      DocumentSnapshot snapshot = await FirebaseFirestore.instance
+          .collection('guides')
+          .doc(guideId)
+          .get();
+
+      if (snapshot.exists) {
+        Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+        setState(() {
+          guideImagePath = data['profileImageUrl'] ??
+              'https://t3.ftcdn.net/jpg/05/17/79/88/360_F_517798849_WuXhHTpg2djTbfNf0FQAjzFEoluHpnct.jpg';
+        });
+      }
+    } catch (e) {
+      print("Error fetching guide image: $e");
+    }
+  }
+
+  // Function to fetch guide details using guideId
+  Future<void> fetchGuideDetails(String guideId) async {
+    try {
+      DocumentSnapshot snapshot = await FirebaseFirestore.instance
+          .collection('guides')
+          .doc(guideId)
+          .get();
+
+      if (snapshot.exists) {
+        Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+        setState(() {
+          guideDetails = GuideModel.fromFirestore(data);
+        });
+      }
+    } catch (e) {
+      print("Error fetching guide details: $e");
+    }
+  }
+
+  // Function to handle booking logic
+  Future<void> bookingTrip(String guideId) async {}
 
   @override
   Widget build(BuildContext context) {
@@ -114,16 +161,63 @@ class _TripDetailScreenState extends State<TripDetailScreen> {
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: () {
-                              // TODO: Implement booking logic here
-                              //
-                              //
-                              //
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                      'Booking for ${widget.trip.tripName} confirmed!'),
+                              // Extract necessary data for the booking
+                              String tripName = widget.trip.tripName;
+                              String guideName = guideDetails.fullName;
+                              double price =
+                                  double.parse(widget.trip.tripPrice);
+                              DateTime startDate = DateTime.now();
+                              // Create the BookingModal and pass it to the BookingConfirmationScreen
+                              BookingModal booking = BookingModal(
+                                tripName: tripName,
+                                guideName: guideName,
+                                guideImagePath: guideImagePath,
+                                price: price,
+                                startDate: startDate,
+                              );
+
+                              // Navigate to the BookingConfirmationScreen
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      BookingConfirmationScreen(
+                                    booking: booking,
+                                  ),
                                 ),
                               );
+
+                              // try {
+                              //   // Extract necessary data for the booking
+                              //   String guideId = widget.trip.guideId;
+                              //   String guideName = widget.guideDetails.fullName;
+                              //   String tripName = widget.trip.tripName;
+                              //   String tripDuration = widget.trip.tripDuration;
+                              //   String price = widget.trip.tripPrice;
+
+                              //   // Navigate to the booking confirmation screen
+                              //   Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //       builder: (context) => bookingConfirmation(
+                              //         tripName: tripName,
+                              //         guideName: guideName,
+                              //         guideImagePath: guideImagePath,
+                              //         price: price,
+                              //       ),
+                              //     ),
+                              //   );
+                              // } catch (e) {
+                              //   // Show an error message if something goes wrong
+                              //   ScaffoldMessenger.of(context).showSnackBar(
+                              //     SnackBar(
+                              //       content: Text(
+                              //         'Failed to navigate for booking. Please try again.',
+                              //       ),
+                              //     ),
+                              //   );
+                              //   print('Error during navigation: $e');
+                              // }
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.blueAccent,
@@ -185,25 +279,5 @@ class _TripDetailScreenState extends State<TripDetailScreen> {
         ),
       ),
     );
-  }
-
-  //find the using guideId to find firebase guides doc the guider image path
-  Future<void> fetchGuideImage(String guideId) async {
-    try {
-      DocumentSnapshot snapshot = await FirebaseFirestore.instance
-          .collection('guides')
-          .doc(guideId)
-          .get();
-
-      if (snapshot.exists) {
-        Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
-        setState(() {
-          guideImagePath = data['profileImageUrl'] ??
-              'https://t3.ftcdn.net/jpg/05/17/79/88/360_F_517798849_WuXhHTpg2djTbfNf0FQAjzFEoluHpnct.jpg';
-        });
-      }
-    } catch (e) {
-      print("Error fetching guide image: $e");
-    }
   }
 }
